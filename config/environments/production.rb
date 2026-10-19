@@ -60,15 +60,16 @@ Rails.application.configure do
   # Set host to be used by links generated in mailer templates.
   config.action_mailer.default_url_options = { host: "example.com" }
 
-  # Specify outgoing SMTP server. Remember to add smtp/* credentials via bin/rails credentials:edit.
-  config.action_mailer.smtp_settings = {
-    address:              ENV.fetch('SMTP_ADDRESS', 'smtp.gmail.com'),
-    port:                 ENV.fetch('SMTP_PORT', 587).to_i,
-    domain:               ENV.fetch('SMTP_DOMAIN', 'gmail.com'),
-    user_name:            ENV['SMTP_USERNAME'],
-    password:             ENV['SMTP_PASSWORD'],
-    authentication:       'plain',
-    enable_starttls_auto: true
+  config.action_mailer.delivery_method = :resend
+  config.action_mailer.perform_caching = false
+  config.action_mailer.raise_delivery_errors = true
+
+  # Khai báo URL mặc định cho ứng dụng trên Render
+  config.action_mailer.default_url_options = { host: 'nha-go.onrender.com', protocol: 'https' }
+
+  # Cấu hình Resend API Key từ biến môi trường trên Render
+  config.action_mailer.resend_settings = {
+    api_key: ENV['RESEND_API_KEY']
   }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
