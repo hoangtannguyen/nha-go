@@ -147,6 +147,11 @@
 .catalog .grid{margin-top:26px}
 .catalog-empty{background:var(--paper);border:1px dashed rgba(46,42,36,.2);border-radius:var(--radius);padding:56px 24px;text-align:center;margin-top:26px}
 .catalog-empty p{color:var(--muted);margin-bottom:18px}
+.pagination{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px;margin-top:36px}
+.pagination a,.pagination .current{display:inline-flex;align-items:center;justify-content:center;min-width:40px;height:40px;padding:0 12px;border-radius:999px;border:1.5px solid rgba(46,42,36,.15);background:var(--paper);color:var(--ink);font-weight:600;font-size:.9rem;text-decoration:none;transition:.2s}
+.pagination a:hover{border-color:var(--olive)}
+.pagination .current{background:var(--olive);border-color:var(--olive);color:#fff}
+.pagination .gap{color:var(--muted)}
 .catalog-foot{margin-top:56px;padding-top:28px;border-top:1px dashed rgba(46,42,36,.15);text-align:center}
 .catalog-foot p{color:var(--muted);font-size:.95rem;margin-bottom:16px}
 .catalog-foot .btn{margin:0 5px 8px}

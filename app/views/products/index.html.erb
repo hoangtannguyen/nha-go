@@ -34,9 +34,9 @@
     <div class="catalog-bar">
       <p class="catalog-count">
         <% if @category %>
-          <b><%= @products.size %></b> món trong <b><%= @category.name %></b>
+          <b><%= @products.total_count %></b> món trong <b><%= @category.name %></b>
         <% else %>
-          Đang hiện <b><%= @products.size %></b> món
+          Đang hiện <b><%= @products.size %></b> / <%= @products.total_count %> món
         <% end %>
       </p>
 
@@ -57,6 +57,8 @@
       <div class="grid">
         <%= render partial: "shops/product", collection: @products, as: :product %>
       </div>
+
+      <%= paginate @products, window: 2 %>
     <% else %>
       <div class="catalog-empty">
         <p>Danh mục này đang hết hàng rồi 👀</p>

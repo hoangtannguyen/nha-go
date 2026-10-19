@@ -17,7 +17,7 @@ class ProductsController < ApplicationController
     scope = Product.visible.with_attached_photos.includes(:category)
     scope = scope.in_category(@category) if @category
 
-    @products = scope.available_first.order(SORT_OPTIONS.dig(@sort, :order))
+    @products = scope.available_first.order(SORT_OPTIONS.dig(@sort, :order)).page(params[:page]).per(20)
     @total_count = Product.visible.count
     @counts_by_category = Product.visible.group(:category_id).count
   end

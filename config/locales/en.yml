@@ -29,3 +29,10 @@
 
 en:
   hello: "Hello world"
+  views:
+    pagination:
+      first: "« Đầu"
+      last: "Cuối »"
+      previous: "‹ Trước"
+      next: "Sau ›"
+      truncate: "…"
