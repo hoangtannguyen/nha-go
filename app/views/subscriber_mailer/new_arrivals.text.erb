@@ -1,0 +1,13 @@
+Hàng mới về rồi <%= @subscriber.display_name %> ơi!
+
+Shop vừa lên <%= @products.size %> món. Mỗi món chỉ có một chiếc, ưng là nhắn shop giữ liền nha.
+
+<% @products.each do |product| -%>
+- <%= product.name %> (<%= product.category_name %>, <%= product.size_summary %>) — <%= price_vnd(product.price) %>
+  <%= product_url(product) %>
+<% end -%>
+
+Xem tất cả hàng đang có: <%= products_url %>
+
+---
+Huỷ nhận tin: <%= @unsubscribe_url %>

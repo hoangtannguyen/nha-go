@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <title><%= content_for(:title) || "Quản trị" %> — Nhà Gô</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= favicon_link_tag image_path("favicon.png"), type: "image/png" %>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Sriracha&display=swap" rel="stylesheet">
+
+    <%= stylesheet_link_tag "application", "nha_go", "cart", "admin", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="admin-body">
+    <aside class="admin-side" data-controller="menu">
+      <div class="admin-brand">
+        <%= link_to admin_root_path do %><%= image_tag "logo.webp", alt: "Nhà Gô" %><% end %>
+        <span>Quản trị</span>
+      </div>
+
+      <nav class="admin-nav">
+        <%= link_to "📊 Tổng quan", admin_root_path, class: admin_nav_class("dashboard") %>
+        <%= link_to "🧾 Đơn hàng", admin_orders_path, class: admin_nav_class("orders") %>
+        <%= link_to "👕 Sản phẩm", admin_products_path, class: admin_nav_class("products") %>
+        <%= link_to "🏷️ Danh mục", admin_categories_path, class: admin_nav_class("categories") %>
+        <%= link_to "🙋 Khách hàng", admin_customers_path, class: admin_nav_class("customers") %>
+        <%= link_to "📬 Thành viên", admin_subscribers_path, class: admin_nav_class("subscribers") %>
+        <%= link_to "🔑 Tài khoản admin", admin_admin_users_path, class: admin_nav_class("admin_users") %>
+      </nav>
+
+      <div class="admin-side-foot">
+        <%= link_to "↗ Xem trang bán hàng", root_path, class: "admin-side-link", target: "_blank", rel: "noopener" %>
+      </div>
+    </aside>
+
+    <div class="admin-main">
+      <header class="admin-top">
+        <h1><%= content_for(:title) || "Tổng quan" %></h1>
+
+        <div class="admin-user">
+          <span><%= current_admin.name %></span>
+          <%= button_to "Đăng xuất", admin_logout_path, method: :delete, class: "admin-logout" %>
+        </div>
+      </header>
+
+      <% if flash.any? %>
+        <div class="admin-flash-wrap">
+          <% flash.each do |type, message| %>
+            <div class="flash flash-<%= type %>"><%= message %></div>
+          <% end %>
+        </div>
+      <% end %>
+
+      <main class="admin-content">
+        <%= yield %>
+      </main>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,88 @@
+<% content_for :title, "Giỏ hàng — Nhà Gô" %>
+
+<section class="cart-page">
+  <div class="wrap">
+    <h2 class="sec-title">Giỏ hàng của <span class="hand">bạn</span></h2>
+    <p class="sec-sub">Kiểm tra lại món đã chọn rồi điền thông tin để shop giữ đồ và ship cho bạn.</p>
+
+    <div class="cart-grid">
+      <div class="cart-lines">
+        <%= render "carts/items" %>
+      </div>
+
+      <%# ===== CHECKOUT CARD ===== %>
+      <aside class="checkout-card">
+        <h3>Thông tin đặt hàng</h3>
+
+        <%= render "carts/summary" %>
+
+        <%= form_with model: @order, url: orders_path, class: "checkout-form" do |form| %>
+          <% if @order.errors.any? %>
+            <div class="form-errors">
+              <% @order.errors.full_messages.each do |message| %>
+                <p><%= message %></p>
+              <% end %>
+            </div>
+          <% end %>
+
+          <div class="field">
+            <%= form.label :customer_name, "Họ và tên" %>
+            <%= form.text_field :customer_name, placeholder: "Nguyễn Văn A", required: true %>
+          </div>
+
+          <div class="field">
+            <%= form.label :phone, "Số điện thoại / Zalo" %>
+            <%= form.telephone_field :phone, placeholder: "0901234567", required: true %>
+          </div>
+
+          <div class="field">
+            <%= form.label :email, "Email (không bắt buộc)" %>
+            <%= form.email_field :email, placeholder: "ban@example.com", autocomplete: "email" %>
+            <span class="field-hint">Để nhận mã vận đơn qua email khi shop gửi hàng.</span>
+          </div>
+
+          <div class="field">
+            <%= form.label :street, "Số nhà, tên đường" %>
+            <%= form.text_field :street, placeholder: "97 Ngô Đức Kế", required: true %>
+          </div>
+
+          <div class="field-row" data-controller="address-select"
+               data-address-select-url-value="<%= address_wards_path %>"
+               data-address-select-selected-value="<%= @order.ward_code %>">
+            <div class="field">
+              <%= form.label :province_code, "Tỉnh / Thành phố" %>
+              <%= form.select :province_code,
+                              VietnamAddress.province_options,
+                              { prompt: "— chọn tỉnh/thành —" },
+                              { class: "form-select", required: true,
+                                data: { address_select_target: "province",
+                                        action: "change->address-select#change" } } %>
+            </div>
+
+            <div class="field">
+              <%= form.label :ward_code, "Phường / Xã" %>
+              <%= form.select :ward_code,
+                              VietnamAddress.ward_options(@order.province_code),
+                              { prompt: "— chọn phường/xã —" },
+                              { class: "form-select", required: true,
+                                disabled: @order.province_code.blank?,
+                                data: { address_select_target: "ward" } } %>
+              <noscript>
+                <span class="field-hint">Chọn tỉnh/thành rồi bấm Đặt hàng một lần để nạp danh sách phường/xã.</span>
+              </noscript>
+            </div>
+          </div>
+
+          <div class="field">
+            <%= form.label :note, "Ghi chú (không bắt buộc)" %>
+            <%= form.text_area :note, rows: 2, placeholder: "Giao giờ hành chính, gọi trước khi tới..." %>
+          </div>
+
+          <%= form.submit "Gửi yêu cầu tư vấn", class: "btn btn-rust", disabled: current_cart.empty? %>
+
+          <p class="note">Shop giữ đồ 24h sau khi nhận đơn. Thanh toán khi nhận hàng (COD).</p>
+        <% end %>
+      </aside>
+    </div>
+  </div>
+</section>

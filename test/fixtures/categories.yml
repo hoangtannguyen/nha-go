@@ -1,0 +1,23 @@
+jacket:
+  name: Áo khoác
+  slug: aokhoac
+  description: Denim, bomber, dạ
+  position: 1
+
+tee:
+  name: Áo thun
+  slug: aothun
+  description: Tee, band tee
+  position: 2
+
+pants:
+  name: Quần dài
+  slug: quandai
+  description: Jeans, kaki
+  position: 3
+
+shirt:
+  name: Sơ mi / Hoodie
+  slug: somiveston
+  description: Sơ mi, flannel, hoodie
+  position: 4

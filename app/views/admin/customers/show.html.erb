@@ -1,0 +1,59 @@
+<% content_for :title, @customer.name %>
+
+<p class="back-link"><%= link_to "← Về danh sách khách hàng", admin_customers_path %></p>
+
+<div class="stat-grid">
+  <div class="stat-card">
+    <span class="stat-label">Số đơn</span>
+    <b class="stat-value"><%= @customer.orders_count %></b>
+  </div>
+  <div class="stat-card">
+    <span class="stat-label">Tổng chi tiêu</span>
+    <b class="stat-value"><%= price_vnd(@customer.total_spent) %></b>
+  </div>
+  <div class="stat-card">
+    <span class="stat-label">Đơn gần nhất</span>
+    <b class="stat-value small">
+      <%= @customer.last_ordered_at ? l(@customer.last_ordered_at, format: :short) : "—" %>
+    </b>
+  </div>
+</div>
+
+<div class="admin-cols">
+  <section class="panel">
+    <div class="panel-head"><h2>Lịch sử đơn</h2></div>
+
+    <% if @orders.any? %>
+      <table class="admin-table">
+        <thead><tr><th>Mã đơn</th><th>Số món</th><th>Tổng</th><th>Trạng thái</th><th>Đặt lúc</th></tr></thead>
+        <tbody>
+          <% @orders.each do |order| %>
+            <tr>
+              <td><%= link_to order.code, admin_order_path(order), class: "mono-link" %></td>
+              <td class="num"><%= order.order_items.sum(&:quantity) %></td>
+              <td class="num"><%= price_vnd(order.total) %></td>
+              <td><%= order_status_badge(order) %></td>
+              <td class="muted"><%= l order.created_at, format: :short %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p class="empty-note">Khách này chưa có đơn nào.</p>
+    <% end %>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head"><h2>Liên hệ</h2></div>
+
+    <dl class="info-list">
+      <dt>Họ tên</dt><dd><%= @customer.name %></dd>
+      <dt>Điện thoại</dt><dd class="mono"><%= @customer.phone %></dd>
+      <dt>Địa chỉ gần nhất</dt><dd><%= @customer.address.presence || "—" %></dd>
+      <dt>Khách từ</dt><dd><%= l @customer.created_at, format: :long %></dd>
+    </dl>
+
+    <%= link_to "Nhắn Zalo cho khách", "https://zalo.me/#{@customer.phone}",
+                class: "btn btn-olive", target: "_blank", rel: "noopener" %>
+  </section>
+</div>

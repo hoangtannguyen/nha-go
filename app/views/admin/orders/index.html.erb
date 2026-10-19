@@ -1,0 +1,50 @@
+<% content_for :title, "Đơn hàng" %>
+
+<div class="toolbar">
+  <div class="filter-chips">
+    <%= link_to "Tất cả (#{@counts_by_status.values.sum})", admin_orders_path(q: params[:q]),
+                class: "chip #{"active" if @status.blank?}" %>
+    <% Order.statuses.each_key do |status| %>
+      <%= link_to "#{ApplicationHelper::ORDER_STATUS_LABELS[status]} (#{@counts_by_status.fetch(status, 0)})",
+                  admin_orders_path(status: status, q: params[:q]),
+                  class: "chip #{"active" if @status == status}" %>
+    <% end %>
+  </div>
+
+  <%= form_with url: admin_orders_path, method: :get, class: "search-form" do |form| %>
+    <%= form.hidden_field :status, value: @status %>
+    <%= form.search_field :q, value: params[:q], placeholder: "Tìm mã đơn, tên, SĐT..." %>
+    <%= form.submit "Tìm", class: "btn-sm" %>
+  <% end %>
+</div>
+
+<section class="panel">
+  <% if @orders.any? %>
+    <table class="admin-table">
+      <thead>
+        <tr><th>Mã đơn</th><th>Khách hàng</th><th>SĐT</th><th>Số món</th><th>Tổng</th><th>Trạng thái</th><th>Đặt lúc</th></tr>
+      </thead>
+      <tbody>
+        <% @orders.each do |order| %>
+          <tr>
+            <td><%= link_to order.code, admin_order_path(order), class: "mono-link" %></td>
+            <td>
+              <% if order.customer %>
+                <%= link_to order.customer_name, admin_customer_path(order.customer) %>
+              <% else %>
+                <%= order.customer_name %>
+              <% end %>
+            </td>
+            <td class="mono"><%= order.phone %></td>
+            <td class="num"><%= order.order_items.sum(&:quantity) %></td>
+            <td class="num"><%= price_vnd(order.total) %></td>
+            <td><%= order_status_badge(order) %></td>
+            <td class="muted"><%= l order.created_at, format: :short %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p class="empty-note">Không có đơn nào khớp bộ lọc.</p>
+  <% end %>
+</section>

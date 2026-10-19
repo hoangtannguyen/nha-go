@@ -1,0 +1,55 @@
+<% content_for :title, "Đăng ký nhận tin hàng mới — Nhà Gô" %>
+<% content_for :description, "Để lại email, Nhà Gô báo bạn ngay khi có lô đồ si mới về. Mỗi món chỉ một chiếc." %>
+
+<section class="signup">
+  <div class="wrap signup-grid">
+    <div>
+      <span class="badge">✦ Miễn phí, huỷ lúc nào cũng được</span>
+      <h1>Nhận tin <span class="hand">hàng mới</span><br>trước mọi người</h1>
+      <p class="lead">
+        Hàng si mỗi món chỉ có một chiếc. Để lại email, mỗi lần shop lên lô mới
+        bạn sẽ được báo ngay — khỏi phải canh Facebook.
+      </p>
+
+      <ul class="signup-points">
+        <li>📬 Chỉ gửi khi thật sự có hàng mới, không spam</li>
+        <li>👀 Biết trước nên dễ giữ được món ưng</li>
+        <li>🚪 Huỷ bằng một cú bấm ngay trong email</li>
+      </ul>
+    </div>
+
+    <div class="signup-card">
+      <h2>Đăng ký thành viên</h2>
+
+      <%= form_with model: @subscriber, url: subscribers_path, class: "checkout-form" do |form| %>
+        <% if @subscriber.errors.any? %>
+          <div class="form-errors">
+            <% @subscriber.errors.full_messages.each do |message| %>
+              <p><%= message %></p>
+            <% end %>
+          </div>
+        <% end %>
+
+        <div class="field">
+          <%= form.label :email, "Email" %>
+          <%= form.email_field :email, required: true, autofocus: true,
+                               autocomplete: "email", placeholder: "ban@email.com" %>
+        </div>
+
+        <div class="field">
+          <%= form.label :name, "Tên gọi (không bắt buộc)" %>
+          <%= form.text_field :name, placeholder: "Shop gọi bạn là gì cho thân mật" %>
+        </div>
+
+        <div class="field">
+          <%= form.label :phone, "Số điện thoại / Zalo (không bắt buộc)" %>
+          <%= form.telephone_field :phone, placeholder: "0901234567" %>
+        </div>
+
+        <%= form.submit "Đăng ký nhận tin", class: "btn btn-rust" %>
+
+        <p class="note">Shop chỉ dùng email để báo hàng mới, không chia sẻ cho ai khác.</p>
+      <% end %>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,41 @@
+<%= form_with model: [ :admin, admin_user ], class: "checkout-form admin-form" do |form| %>
+  <% if admin_user.errors.any? %>
+    <div class="form-errors">
+      <% admin_user.errors.full_messages.each do |message| %>
+        <p><%= message %></p>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name, "Họ tên" %>
+    <%= form.text_field :name, required: true %>
+  </div>
+
+  <div class="field">
+    <%= form.label :email, "Email đăng nhập" %>
+    <%= form.email_field :email, required: true, autocomplete: "username" %>
+  </div>
+
+  <div class="field-row">
+    <div class="field">
+      <%= form.label :password, admin_user.new_record? ? "Mật khẩu (tối thiểu 8 ký tự)" : "Mật khẩu mới (để trống nếu giữ nguyên)" %>
+      <%= form.password_field :password, autocomplete: "new-password", required: admin_user.new_record? %>
+    </div>
+
+    <div class="field">
+      <%= form.label :password_confirmation, "Nhập lại mật khẩu" %>
+      <%= form.password_field :password_confirmation, autocomplete: "new-password", required: admin_user.new_record? %>
+    </div>
+  </div>
+
+  <div class="field field-check">
+    <%= form.check_box :active %>
+    <%= form.label :active, "Cho phép đăng nhập" %>
+  </div>
+
+  <div class="form-actions">
+    <%= form.submit admin_user.new_record? ? "Tạo tài khoản" : "Lưu thay đổi", class: "btn btn-rust" %>
+    <%= link_to "Huỷ", admin_admin_users_path, class: "btn btn-ghost" %>
+  </div>
+<% end %>

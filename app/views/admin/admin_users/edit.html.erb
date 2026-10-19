@@ -1,0 +1,7 @@
+<% content_for :title, "Sửa tài khoản: #{@admin_user.name}" %>
+
+<p class="back-link"><%= link_to "← Về danh sách tài khoản", admin_admin_users_path %></p>
+
+<section class="panel panel-narrow">
+  <%= render "form", admin_user: @admin_user %>
+</section>

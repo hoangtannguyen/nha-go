@@ -1,0 +1,16 @@
+denim_jacket:
+  name: Áo khoác denim retro
+  category: jacket
+  tag: HOT
+  image: p-jacket-denim.webp
+  size_label: Size L · Nam/Nữ
+  price: 285000
+  position: 1
+
+jeans:
+  name: Quần jeans ống đứng
+  category: pants
+  image: p-jeans.webp
+  size_label: Size 30 · Nữ
+  price: 220000
+  position: 2

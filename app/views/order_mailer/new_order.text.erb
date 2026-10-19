@@ -1,0 +1,18 @@
+CÓ ĐƠN MỚI: <%= @order.code %>
+Đặt lúc <%= l @order.created_at, format: :long %>
+
+Khách hàng: <%= @order.customer_name %>
+Điện thoại: <%= @order.phone %>
+Địa chỉ:    <%= @order.address %>
+<% if @order.note.present? -%>
+Ghi chú:    <%= @order.note %>
+<% end -%>
+
+Món trong đơn:
+<% @order_items.each do |item| -%>
+- <%= item.name %> x<%= item.quantity %> — <%= price_vnd(item.subtotal) %>
+<% end -%>
+
+TỔNG CỘNG: <%= price_vnd(@order.total) %>
+
+Mở đơn trong trang quản trị: <%= @admin_url %>

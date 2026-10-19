@@ -1,0 +1,54 @@
+<% content_for :title, "Gửi email hàng mới" %>
+
+<p class="back-link"><%= link_to "← Về danh sách thành viên", admin_subscribers_path %></p>
+
+<% if @active_count.zero? %>
+  <section class="panel">
+    <p class="empty-note">
+      Chưa có thành viên nào đang nhận tin, nên chưa gửi được.
+      Mời khách đăng ký ở <code>/dang-ky-nhan-tin</code> trước nhé.
+    </p>
+  </section>
+<% else %>
+  <%= form_with url: broadcast_admin_subscribers_path, method: :post, class: "admin-form" do |form| %>
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Chọn món muốn báo tin</h2>
+        <span class="muted">20 món mới thêm gần đây</span>
+      </div>
+
+      <div class="broadcast-grid">
+        <% @products.each do |product| %>
+          <label class="broadcast-item">
+            <%= check_box_tag "product_ids[]", product.id, false, id: "broadcast_product_#{product.id}" %>
+            <%= product_image_tag product, alt: product.name, class: "broadcast-thumb" %>
+            <span class="broadcast-info">
+              <b><%= product.name %></b>
+              <span class="muted"><%= product.category_name %> · <%= price_vnd(product.price) %></span>
+            </span>
+          </label>
+        <% end %>
+      </div>
+    </section>
+
+    <section class="panel mt">
+      <div class="panel-head"><h2>Gửi tới</h2></div>
+
+      <p class="broadcast-summary">
+        Email sẽ gửi cho <b><%= @active_count %></b> thành viên đang nhận tin.
+        Người đã huỷ sẽ không nhận được.
+      </p>
+
+      <p class="field-hint">
+        Mỗi email đều kèm sẵn link huỷ nhận tin riêng cho từng người.
+        Nội dung gửi đi gồm ảnh, tên, danh mục, size và giá của các món bạn chọn.
+      </p>
+
+      <div class="form-actions">
+        <%= form.submit "Gửi email cho #{@active_count} thành viên", class: "btn btn-rust",
+                        data: { turbo_confirm: "Gửi email tới #{@active_count} thành viên?" } %>
+        <%= link_to "Huỷ", admin_subscribers_path, class: "btn btn-ghost" %>
+      </div>
+    </section>
+  <% end %>
+<% end %>

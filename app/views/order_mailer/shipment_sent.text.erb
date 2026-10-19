@@ -1,0 +1,20 @@
+Chào <%= @order.customer_name %>, đơn của bạn đã được gửi đi.
+
+Mã đơn hàng:       <%= @order.code %>
+Mã vận đơn:        <%= @order.tracking_code %>
+Đơn vị vận chuyển: <%= @order.carrier_name %>
+Thời điểm gửi:     <%= l @order.shipment_created_at, format: :long %>
+<% if @order.estimated_deliver_time.present? -%>
+Dự kiến giao:      <%= @order.estimated_deliver_time %>
+<% end -%>
+
+Món trong đơn:
+<% @order_items.each do |item| -%>
+- <%= item.name %> x<%= item.quantity %> — <%= price_vnd(item.subtotal) %>
+<% end -%>
+
+TIỀN HÀNG THU KHI NHẬN (COD): <%= price_vnd(@order.total) %>
+<%= @freeship ? "Phí vận chuyển: shop trả." : "Phí vận chuyển: GHTK thu thêm khi giao theo biểu phí của GHTK." %>
+
+Xem trạng thái giao hàng: <%= @order_url %>
+Tra cứu trên GHTK: <%= @lookup_url %> (mã vận đơn <%= @order.tracking_code %>)

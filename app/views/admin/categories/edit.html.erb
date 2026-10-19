@@ -1,0 +1,7 @@
+<% content_for :title, "Sửa danh mục: #{@category.name}" %>
+
+<p class="back-link"><%= link_to "← Về danh sách danh mục", admin_categories_path %></p>
+
+<section class="panel panel-narrow">
+  <%= render "form", category: @category %>
+</section>

@@ -1,0 +1,11 @@
+<div class="cart-action" id="<%= dom_id(product, :cart_action) %>">
+  <% if current_cart.include?(product) %>
+    <%= button_to cart_item_path(product), method: :delete, class: "add-cart in-cart" do %>
+      ✓ Đã trong giỏ (<%= current_cart.quantity_for(product) %>) — bỏ ra
+    <% end %>
+  <% elsif product.sold_out? %>
+    <span class="add-cart is-sold-out">Đã bán hết</span>
+  <% else %>
+    <%= button_to "+ Thêm vào giỏ", cart_items_path, params: { product_id: product.id }, class: "add-cart" %>
+  <% end %>
+</div>

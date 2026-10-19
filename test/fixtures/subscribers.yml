@@ -1,0 +1,23 @@
+lan:
+  email: lan@example.com
+  name: Thuỳ Lan
+  phone: "0901234567"
+  unsubscribe_token: token-lan-active
+  active: true
+  subscribed_at: <%= 10.days.ago.to_fs(:db) %>
+  emails_sent_count: 2
+  last_emailed_at: <%= 2.days.ago.to_fs(:db) %>
+
+nam:
+  email: nam@example.com
+  name: Văn Nam
+  unsubscribe_token: token-nam-active
+  active: true
+  subscribed_at: <%= 3.days.ago.to_fs(:db) %>
+
+huy:
+  email: huy@example.com
+  unsubscribe_token: token-huy-inactive
+  active: false
+  subscribed_at: <%= 20.days.ago.to_fs(:db) %>
+  unsubscribed_at: <%= 1.day.ago.to_fs(:db) %>

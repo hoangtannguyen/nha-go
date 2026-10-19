@@ -1,0 +1,7 @@
+<% content_for :title, "Sửa: #{@product.name}" %>
+
+<p class="back-link"><%= link_to "← Về danh sách sản phẩm", admin_products_path %></p>
+
+<section class="panel panel-narrow">
+  <%= render "form", product: @product %>
+</section>

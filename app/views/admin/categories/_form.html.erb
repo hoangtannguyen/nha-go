@@ -1,0 +1,49 @@
+<%= form_with model: [ :admin, category ], class: "checkout-form admin-form" do |form| %>
+  <% if category.errors.any? %>
+    <div class="form-errors">
+      <% category.errors.full_messages.each do |message| %>
+        <p><%= message %></p>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name, "Tên danh mục" %>
+    <%= form.text_field :name, required: true, placeholder: "Áo khoác" %>
+  </div>
+
+  <div class="field-row">
+    <div class="field">
+      <%= form.label :slug, "Slug trên link" %>
+      <%= form.text_field :slug, placeholder: "để trống sẽ tự tạo từ tên" %>
+      <span class="field-hint">
+        Chỉ chữ thường, số và dấu gạch ngang.
+        <% if category.persisted? %>
+          Đổi slug làm hỏng link cũ đã chia sẻ.
+        <% end %>
+      </span>
+    </div>
+
+    <div class="field">
+      <%= form.label :position, "Thứ tự hiển thị" %>
+      <%= form.number_field :position, min: 0 %>
+    </div>
+  </div>
+
+  <div class="field">
+    <%= form.label :description, "Mô tả ngắn (không bắt buộc)" %>
+    <%= form.text_field :description, placeholder: "Áo khoác denim, bomber, dạ..." %>
+  </div>
+
+  <% if category.persisted? && category.products_count.positive? %>
+    <p class="field-hint">
+      Đang có <b><%= category.products_count %></b> sản phẩm thuộc danh mục này.
+      Phải chuyển hết sang danh mục khác mới xoá được.
+    </p>
+  <% end %>
+
+  <div class="form-actions">
+    <%= form.submit category.new_record? ? "Thêm danh mục" : "Lưu thay đổi", class: "btn btn-rust" %>
+    <%= link_to "Huỷ", admin_categories_path, class: "btn btn-ghost" %>
+  </div>
+<% end %>

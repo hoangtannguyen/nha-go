@@ -1,0 +1,61 @@
+<p style="font-size:17px;font-weight:bold;margin:0 0 6px">
+  Có đơn mới: <%= @order.code %>
+</p>
+<p style="font-size:13px;color:#8a7f6d;margin:0 0 20px">
+  Đặt lúc <%= l @order.created_at, format: :long %>
+</p>
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0"
+       style="background:#f7f1e3;border-radius:12px;margin-bottom:18px">
+  <tr>
+    <td style="padding:16px 18px">
+      <div style="font-size:13px;color:#8a7f6d">Khách hàng</div>
+      <div style="font-size:15px;font-weight:bold;margin-bottom:10px"><%= @order.customer_name %></div>
+
+      <div style="font-size:13px;color:#8a7f6d">Điện thoại</div>
+      <div style="font-size:15px;font-weight:bold;margin-bottom:10px">
+        <a href="tel:<%= @order.phone %>" style="color:#2e2a24;text-decoration:none"><%= @order.phone %></a>
+        · <a href="https://zalo.me/<%= @order.phone %>" style="color:#c1502e">Nhắn Zalo</a>
+      </div>
+
+      <div style="font-size:13px;color:#8a7f6d">Địa chỉ giao</div>
+      <div style="font-size:14px;margin-bottom:<%= @order.note.present? ? "10px" : "0" %>"><%= @order.address %></div>
+
+      <% if @order.note.present? %>
+        <div style="font-size:13px;color:#8a7f6d">Ghi chú</div>
+        <div style="font-size:14px"><%= @order.note %></div>
+      <% end %>
+    </td>
+  </tr>
+</table>
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:18px">
+  <% @order_items.each do |item| %>
+    <tr>
+      <td style="padding:9px 0;border-bottom:1px solid rgba(46,42,36,.1)">
+        <span style="font-size:14px;font-weight:bold"><%= item.name %></span>
+        <span style="font-size:13px;color:#8a7f6d"> × <%= item.quantity %></span>
+      </td>
+      <td align="right" style="padding:9px 0;border-bottom:1px solid rgba(46,42,36,.1);font-size:14px;white-space:nowrap">
+        <%= price_vnd(item.subtotal) %>
+      </td>
+    </tr>
+  <% end %>
+  <tr>
+    <td style="padding:12px 0;font-size:15px;font-weight:bold">Tổng cộng</td>
+    <td align="right" style="padding:12px 0;font-size:18px;font-weight:bold;color:#3f4d28;white-space:nowrap">
+      <%= price_vnd(@order.total) %>
+    </td>
+  </tr>
+</table>
+
+<table role="presentation" cellpadding="0" cellspacing="0">
+  <tr>
+    <td style="background:#c1502e;border-radius:999px">
+      <a href="<%= @admin_url %>"
+         style="display:inline-block;padding:12px 26px;color:#ffffff;font-size:14px;font-weight:bold;text-decoration:none">
+        Mở đơn trong trang quản trị
+      </a>
+    </td>
+  </tr>
+</table>

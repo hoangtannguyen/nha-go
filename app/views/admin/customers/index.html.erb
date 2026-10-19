@@ -1,0 +1,35 @@
+<% content_for :title, "Khách hàng" %>
+
+<div class="toolbar">
+  <p class="muted"><%= @customers.length %> khách đã từng đặt hàng</p>
+
+  <%= form_with url: admin_customers_path, method: :get, class: "search-form" do |form| %>
+    <%= form.search_field :q, value: params[:q], placeholder: "Tìm tên hoặc SĐT..." %>
+    <%= form.submit "Tìm", class: "btn-sm" %>
+  <% end %>
+</div>
+
+<section class="panel">
+  <% if @customers.any? %>
+    <table class="admin-table">
+      <thead>
+        <tr><th>Khách hàng</th><th>SĐT</th><th>Số đơn</th><th>Tổng chi tiêu</th><th>Đơn gần nhất</th></tr>
+      </thead>
+      <tbody>
+        <% @customers.each do |customer| %>
+          <tr>
+            <td><%= link_to customer.name, admin_customer_path(customer) %></td>
+            <td class="mono"><%= customer.phone %></td>
+            <td class="num"><%= customer.orders_total %></td>
+            <td class="num"><%= price_vnd(customer.spent_total) %></td>
+            <td class="muted">
+              <%= customer.last_order_at ? l(customer.last_order_at.to_datetime, format: :short) : "—" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p class="empty-note">Chưa có khách hàng nào.</p>
+  <% end %>
+</section>

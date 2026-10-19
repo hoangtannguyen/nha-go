@@ -1,0 +1,17 @@
+owner:
+  name: Chủ shop
+  email: owner@nhago.local
+  password_digest: <%= BCrypt::Password.create("matkhau12345", cost: 4) %>
+  active: true
+
+staff:
+  name: Nhân viên
+  email: staff@nhago.local
+  password_digest: <%= BCrypt::Password.create("matkhau12345", cost: 4) %>
+  active: true
+
+locked:
+  name: Đã khoá
+  email: locked@nhago.local
+  password_digest: <%= BCrypt::Password.create("matkhau12345", cost: 4) %>
+  active: false

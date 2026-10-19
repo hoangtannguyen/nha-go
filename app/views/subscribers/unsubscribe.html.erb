@@ -1,0 +1,19 @@
+<% content_for :title, "Đã huỷ nhận tin — Nhà Gô" %>
+
+<section class="signup">
+  <div class="wrap">
+    <div class="signup-done">
+      <div class="signup-done-ico">👋</div>
+      <h1>Đã huỷ nhận tin</h1>
+      <p class="sec-sub">
+        Shop sẽ không gửi email tới <b><%= @subscriber.email %></b> nữa.
+        Khi nào muốn nhận lại, bạn chỉ cần đăng ký lại bằng email này.
+      </p>
+
+      <div class="signup-done-actions">
+        <%= link_to "Đăng ký lại", new_subscriber_path, class: "btn btn-olive" %>
+        <%= link_to "← Về trang chủ", root_path, class: "btn btn-ghost" %>
+      </div>
+    </div>
+  </div>
+</section>

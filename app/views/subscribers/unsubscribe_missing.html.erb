@@ -1,0 +1,19 @@
+<% content_for :title, "Không tìm thấy đăng ký — Nhà Gô" %>
+
+<section class="signup">
+  <div class="wrap">
+    <div class="signup-done">
+      <div class="signup-done-ico">🤔</div>
+      <h1>Link không còn hiệu lực</h1>
+      <p class="sec-sub">
+        Link huỷ nhận tin này không đúng hoặc email đã được xoá khỏi danh sách rồi.
+        Nếu vẫn nhận được email từ shop, nhắn Zalo để shop gỡ giúp.
+      </p>
+
+      <div class="signup-done-actions">
+        <%= link_to "Nhắn Zalo cho shop", zalo_url, class: "btn btn-rust", target: "_blank", rel: "noopener" %>
+        <%= link_to "← Về trang chủ", root_path, class: "btn btn-ghost" %>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,80 @@
+<% content_for :title, "Tổng quan" %>
+
+<div class="stat-grid">
+  <div class="stat-card">
+    <span class="stat-label">Đơn hôm nay</span>
+    <b class="stat-value"><%= @orders_today %></b>
+  </div>
+  <div class="stat-card">
+    <span class="stat-label">Doanh thu hôm nay</span>
+    <b class="stat-value"><%= price_vnd(@revenue_today) %></b>
+  </div>
+  <div class="stat-card">
+    <span class="stat-label">Doanh thu tháng này</span>
+    <b class="stat-value"><%= price_vnd(@revenue_month) %></b>
+  </div>
+  <div class="stat-card <%= "stat-warn" if @pending_count > 0 %>">
+    <span class="stat-label">Đơn chờ xử lý</span>
+    <b class="stat-value"><%= @pending_count %></b>
+  </div>
+</div>
+
+<div class="admin-cols">
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Đơn gần đây</h2>
+      <%= link_to "Xem tất cả →", admin_orders_path, class: "panel-link" %>
+    </div>
+
+    <% if @recent_orders.any? %>
+      <table class="admin-table">
+        <thead>
+          <tr><th>Mã đơn</th><th>Khách</th><th>Tổng</th><th>Trạng thái</th><th>Lúc</th></tr>
+        </thead>
+        <tbody>
+          <% @recent_orders.each do |order| %>
+            <tr>
+              <td><%= link_to order.code, admin_order_path(order), class: "mono-link" %></td>
+              <td><%= order.customer_name %></td>
+              <td class="num"><%= price_vnd(order.total) %></td>
+              <td><%= order_status_badge(order) %></td>
+              <td class="muted"><%= l order.created_at, format: :short %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p class="empty-note">Chưa có đơn nào.</p>
+    <% end %>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head"><h2>Bán chạy</h2></div>
+
+    <% if @best_sellers.any? %>
+      <ul class="rank-list">
+        <% @best_sellers.each_with_index do |(name, quantity), index| %>
+          <li>
+            <span class="rank-no"><%= index + 1 %></span>
+            <span class="rank-name"><%= name %></span>
+            <b><%= quantity %> món</b>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="empty-note">Chưa bán được món nào.</p>
+    <% end %>
+
+    <div class="panel-head mt"><h2>Kho &amp; khách</h2></div>
+    <ul class="rank-list">
+      <li><span class="rank-name">Sản phẩm đang bán</span><b><%= @products_count %></b></li>
+      <li><span class="rank-name">Khách hàng</span><b><%= @customers_count %></b></li>
+      <% Order.statuses.each_key do |status| %>
+        <li>
+          <span class="rank-name">Đơn <%= ApplicationHelper::ORDER_STATUS_LABELS[status].downcase %></span>
+          <b><%= @counts_by_status.fetch(status, 0) %></b>
+        </li>
+      <% end %>
+    </ul>
+  </section>
+</div>

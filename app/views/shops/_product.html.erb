@@ -1,0 +1,40 @@
+<article class="card <%= "is-sold-out" if product.sold_out? %>" data-cat="<%= product.category_slug %>" data-filter-target="card">
+  <%= link_to product_path(product), class: "ph" do %>
+    <% if product.sold_out? %>
+      <span class="sold-badge">Đã bán hết</span>
+    <% elsif product.tag.present? %>
+      <span class="tag <%= "new" if product.hot? %>"><%= product.tag %></span>
+    <% end %>
+    <%= product_image_tag product, loading: "lazy", alt: product.name %>
+    <% if product.photos_count > 1 %>
+      <span class="photo-count">🖼 <%= product.photos_count %></span>
+    <% end %>
+  <% end %>
+
+  <div class="body">
+    <span class="cat"><%= product.category_name %></span>
+    <h3><%= link_to product.name, product_path(product) %></h3>
+    <span class="meta">
+      <%= product.size_summary %>
+      <% if product.color_names.any? %>
+        · <%= product.color_names.join(", ") %>
+      <% end %>
+    </span>
+
+    <div class="row">
+      <span class="price"><%= price_vnd(product.price) %></span>
+      <span class="row-actions">
+        <button type="button" class="copy-link" title="Copy link sản phẩm"
+                data-controller="clipboard" data-clipboard-text-value="<%= product_url(product) %>"
+                data-clipboard-done-value="✓" data-action="clipboard#copy">🔗</button>
+        <% unless product.sold_out? %>
+          <%= link_to "Nhắn mua",
+                      zalo_url("Nhà Gô ơi, mình muốn mua món: #{product.name}"),
+                      class: "buy", target: "_blank", rel: "noopener" %>
+        <% end %>
+      </span>
+    </div>
+
+    <%= render "shops/cart_action", product: product %>
+  </div>
+</article>

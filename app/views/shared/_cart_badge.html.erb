@@ -1,0 +1,7 @@
+<%= link_to cart_path, class: "cart-badge", id: "cart_badge" do %>
+  <span class="cart-badge-icon">🧺</span>
+  <span class="cart-badge-label">Giỏ hàng</span>
+  <% if current_cart.count > 0 %>
+    <span class="cart-badge-count"><%= current_cart.count %></span>
+  <% end %>
+<% end %>

@@ -1,0 +1,132 @@
+<% content_for :title, "Đơn #{@order.code}" %>
+
+<p class="back-link"><%= link_to "← Về danh sách đơn", admin_orders_path %></p>
+
+<div class="admin-cols">
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Món trong đơn</h2>
+      <%= order_status_badge(@order) %>
+    </div>
+
+    <table class="admin-table">
+      <thead><tr><th></th><th>Món</th><th>SL</th><th>Đơn giá</th><th>Thành tiền</th></tr></thead>
+      <tbody>
+        <% @order_items.each do |item| %>
+          <tr>
+            <td class="thumb-cell"><%= product_image_tag item.product, alt: item.name, class: "row-thumb" %></td>
+            <td>
+              <b><%= item.name %></b>
+              <span class="muted block"><%= item.product&.size_label %></span>
+            </td>
+            <td class="num"><%= item.quantity %></td>
+            <td class="num"><%= price_vnd(item.price) %></td>
+            <td class="num"><%= price_vnd(item.subtotal) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+      <tfoot>
+        <tr><td colspan="4" class="num"><b>Tổng cộng</b></td><td class="num total-cell"><%= price_vnd(@order.total) %></td></tr>
+      </tfoot>
+    </table>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head"><h2>Thông tin giao hàng</h2></div>
+
+    <dl class="info-list">
+      <dt>Người nhận</dt>
+      <dd>
+        <% if @order.customer %>
+          <%= link_to @order.customer_name, admin_customer_path(@order.customer) %>
+        <% else %>
+          <%= @order.customer_name %>
+        <% end %>
+      </dd>
+
+      <dt>Điện thoại</dt>
+      <dd class="mono"><%= @order.phone %></dd>
+
+      <dt>Địa chỉ</dt>
+      <dd><%= @order.address %></dd>
+
+      <% if @order.note.present? %>
+        <dt>Ghi chú</dt>
+        <dd><%= @order.note %></dd>
+      <% end %>
+
+      <% if @order.email.present? %>
+        <dt>Email</dt>
+        <dd><%= @order.email %></dd>
+      <% end %>
+
+      <dt>Đặt lúc</dt>
+      <dd><%= l @order.created_at, format: :long %></dd>
+    </dl>
+
+    <div class="panel-head mt"><h2>Vận đơn</h2></div>
+
+    <% if @order.shipment? %>
+      <dl class="info-list">
+        <dt>Đơn vị</dt>
+        <dd><%= @order.carrier_name %></dd>
+
+        <dt>Mã vận đơn</dt>
+        <dd class="mono"><%= @order.tracking_code %></dd>
+
+        <dt>Tạo lúc</dt>
+        <dd><%= l @order.shipment_created_at, format: :long if @order.shipment_created_at %></dd>
+
+        <% if @order.shipping_fee %>
+          <dt>Phí ship</dt>
+          <dd><%= price_vnd(@order.shipping_fee) %></dd>
+        <% end %>
+
+        <dt>Trạng thái giao</dt>
+        <dd>
+          <%= @order.carrier_status_label || "Chưa có" %>
+          <% if @order.carrier_status_reason.present? %>
+            <span class="muted block"><%= @order.carrier_status_reason %></span>
+          <% end %>
+        </dd>
+
+        <% if @order.carrier_status_updated_at %>
+          <dt>Cập nhật lúc</dt>
+          <dd><%= l @order.carrier_status_updated_at, format: :long %></dd>
+        <% end %>
+
+        <dt>Email báo khách</dt>
+        <dd>
+          <% if @order.shipping_notified_at %>
+            Đã gửi lúc <%= l @order.shipping_notified_at, format: :long %>
+          <% elsif @order.email.blank? %>
+            Khách không để lại email
+          <% else %>
+            Chưa gửi
+          <% end %>
+        </dd>
+      </dl>
+    <% else %>
+      <p class="muted">Chưa có vận đơn. Chuyển trạng thái sang "<%= ApplicationHelper::ORDER_STATUS_LABELS["shipped"] %>" để tạo vận đơn GHTK.</p>
+      <% if @order.shipment_error.present? %>
+        <p class="muted">Lần tạo gần nhất bị lỗi: <%= @order.shipment_error %></p>
+      <% end %>
+    <% end %>
+
+    <div class="panel-head mt"><h2>Cập nhật trạng thái</h2></div>
+
+    <%= form_with model: @order, url: admin_order_path(@order), method: :patch, class: "checkout-form" do |form| %>
+      <div class="field">
+        <%= form.label :status, "Trạng thái đơn" %>
+        <%= form.select :status,
+                        Order.statuses.keys.map { |s| [ ApplicationHelper::ORDER_STATUS_LABELS[s], s ] },
+                        {}, class: "admin-select" %>
+      </div>
+      <%= form.submit "Lưu trạng thái", class: "btn btn-rust" %>
+    <% end %>
+
+    <%= link_to "Nhắn Zalo cho khách",
+                "https://zalo.me/#{@order.phone}",
+                class: "btn btn-olive mt", target: "_blank", rel: "noopener" %>
+  </section>
+</div>

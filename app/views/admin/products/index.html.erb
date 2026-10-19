@@ -1,0 +1,76 @@
+<% content_for :title, "Sản phẩm" %>
+
+<div class="toolbar">
+  <div class="filter-chips">
+    <%= link_to "Tất cả", admin_products_path, class: "chip #{"active" if @category.blank?}" %>
+    <% @categories.each do |category| %>
+      <%= link_to category.name, admin_products_path(category: category.slug),
+                  class: "chip #{"active" if @category == category}" %>
+    <% end %>
+  </div>
+
+  <%= link_to "+ Thêm sản phẩm", new_admin_product_path, class: "btn btn-rust btn-compact" %>
+</div>
+
+<section class="panel">
+  <% if @products.any? %>
+    <table class="admin-table">
+      <thead>
+        <tr><th></th><th>Tên món</th><th>Danh mục</th><th>Size</th><th>Màu</th><th>Tag</th><th>Tình trạng</th><th>Giá</th><th>TT</th><th></th></tr>
+      </thead>
+      <tbody>
+        <% @products.each do |product| %>
+          <tr>
+            <td class="thumb-cell"><%= product_image_tag product, alt: product.name, class: "row-thumb" %></td>
+            <td><b><%= product.name %></b></td>
+            <td><%= product.category_name %></td>
+            <td class="muted">
+              <% if product.sizes.any? %>
+                <span class="mini-tags">
+                  <% product.sizes.each do |size| %><span class="mini-tag"><%= size %></span><% end %>
+                </span>
+              <% else %>
+                <%= product.size_label %>
+              <% end %>
+            </td>
+            <td>
+              <% if product.colors.any? %>
+                <span class="swatch-row" title="<%= product.color_names.join(', ') %>">
+                  <% product.color_swatches.each do |swatch| %>
+                    <span class="swatch <%= "swatch-multi" if swatch[:hex].nil? %>"
+                          style="<%= "background:#{swatch[:hex]}" if swatch[:hex] %>"></span>
+                  <% end %>
+                </span>
+              <% else %>
+                <span class="muted">—</span>
+              <% end %>
+            </td>
+            <td>
+              <% if product.tag.present? %>
+                <span class="status-badge <%= product.hot? ? "st-shipped" : "st-pending" %>"><%= product.tag %></span>
+              <% end %>
+            </td>
+            <td>
+              <span class="status-badge <%= product.sold_out? ? "st-cancelled" : "st-confirmed" %>">
+                <%= product.sold_out? ? "Đã bán hết" : "Còn hàng" %>
+              </span>
+              <% if product.hidden? %>
+                <span class="status-badge st-cancelled">Đã ẩn</span>
+              <% end %>
+            </td>
+            <td class="num"><%= price_vnd(product.price) %></td>
+            <td class="num muted"><%= product.position %></td>
+            <td class="actions">
+              <%= link_to "Sửa", edit_admin_product_path(product), class: "btn-sm" %>
+              <%= button_to "Xoá", admin_product_path(product), method: :delete,
+                            class: "btn-sm btn-danger",
+                            form: { data: { turbo_confirm: "Xoá \"#{product.name}\"?" } } %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p class="empty-note">Chưa có sản phẩm nào trong danh mục này.</p>
+  <% end %>
+</section>

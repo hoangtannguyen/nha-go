@@ -1,0 +1,74 @@
+<p style="font-size:17px;font-weight:bold;margin:0 0 6px">
+  Chào <%= @order.customer_name %>, đơn của bạn đã được gửi đi 📦
+</p>
+<p style="font-size:13px;color:#8a7f6d;margin:0 0 20px">
+  Shop đã bàn giao đơn <b><%= @order.code %></b> cho đơn vị vận chuyển.
+</p>
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0"
+       style="background:#f7f1e3;border-radius:12px;margin-bottom:18px">
+  <tr>
+    <td style="padding:16px 18px">
+      <div style="font-size:13px;color:#8a7f6d">Mã đơn hàng</div>
+      <div style="font-size:15px;font-weight:bold;margin-bottom:10px"><%= @order.code %></div>
+
+      <div style="font-size:13px;color:#8a7f6d">Mã vận đơn</div>
+      <div style="font-size:15px;font-weight:bold;margin-bottom:10px;font-family:monospace"><%= @order.tracking_code %></div>
+
+      <div style="font-size:13px;color:#8a7f6d">Đơn vị vận chuyển</div>
+      <div style="font-size:15px;font-weight:bold;margin-bottom:10px"><%= @order.carrier_name %></div>
+
+      <div style="font-size:13px;color:#8a7f6d">Thời điểm gửi</div>
+      <div style="font-size:14px;margin-bottom:<%= @order.estimated_deliver_time.present? ? "10px" : "0" %>">
+        <%= l @order.shipment_created_at, format: :long %>
+      </div>
+
+      <% if @order.estimated_deliver_time.present? %>
+        <div style="font-size:13px;color:#8a7f6d">Dự kiến giao</div>
+        <div style="font-size:14px"><%= @order.estimated_deliver_time %></div>
+      <% end %>
+    </td>
+  </tr>
+</table>
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:18px">
+  <% @order_items.each do |item| %>
+    <tr>
+      <td style="padding:9px 0;border-bottom:1px solid rgba(46,42,36,.1)">
+        <span style="font-size:14px;font-weight:bold"><%= item.name %></span>
+        <span style="font-size:13px;color:#8a7f6d"> × <%= item.quantity %></span>
+      </td>
+      <td align="right" style="padding:9px 0;border-bottom:1px solid rgba(46,42,36,.1);font-size:14px;white-space:nowrap">
+        <%= price_vnd(item.subtotal) %>
+      </td>
+    </tr>
+  <% end %>
+  <tr>
+    <td style="padding:12px 0;font-size:15px;font-weight:bold">Tiền hàng thu khi nhận (COD)</td>
+    <td align="right" style="padding:12px 0;font-size:18px;font-weight:bold;color:#3f4d28;white-space:nowrap">
+      <%= price_vnd(@order.total) %>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" style="padding:0 0 4px;font-size:13px;color:#8a7f6d">
+      <%= @freeship ? "Phí vận chuyển: shop trả." : "Phí vận chuyển: GHTK thu thêm khi giao theo biểu phí của GHTK." %>
+    </td>
+  </tr>
+</table>
+
+<table role="presentation" cellpadding="0" cellspacing="0" style="margin-bottom:14px">
+  <tr>
+    <td style="background:#c1502e;border-radius:999px">
+      <a href="<%= @order_url %>"
+         style="display:inline-block;padding:12px 26px;color:#ffffff;font-size:14px;font-weight:bold;text-decoration:none">
+        Xem trạng thái giao hàng
+      </a>
+    </td>
+  </tr>
+</table>
+
+<p style="font-size:13px;color:#8a7f6d;margin:0">
+  Hoặc tra cứu trực tiếp trên trang GHTK
+  <a href="<%= @lookup_url %>" style="color:#c1502e"><%= @lookup_url %></a>
+  với mã vận đơn <b><%= @order.tracking_code %></b>.
+</p>

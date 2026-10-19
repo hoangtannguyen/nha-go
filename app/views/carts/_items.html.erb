@@ -1,0 +1,35 @@
+<div id="cart_items_list">
+  <% if current_cart.empty? %>
+    <div class="cart-empty">
+      <p>Giỏ hàng đang trống trơn 👀</p>
+      <%= link_to "Xem hàng mới về", root_path(anchor: "hang-moi"), class: "btn btn-rust" %>
+    </div>
+  <% else %>
+    <% current_cart.entries.each do |product, quantity| %>
+      <div class="cart-line">
+        <%= product_image_tag product, alt: product.name, class: "cart-thumb" %>
+
+        <div class="cart-info">
+          <span class="cat"><%= product.category_name %></span>
+          <h3><%= product.name %></h3>
+          <span class="meta"><%= product.size_label %></span>
+          <% if product.sold_out? %>
+            <span class="cart-sold-out">Đã bán hết — bỏ ra để đặt hàng</span>
+          <% end %>
+        </div>
+
+        <div class="cart-qty">
+          <%= button_to "−", cart_item_path(product, quantity: quantity - 1), method: :patch, class: "qty-btn" %>
+          <span class="qty-value"><%= quantity %></span>
+          <%= button_to "+", cart_item_path(product, quantity: quantity + 1), method: :patch, class: "qty-btn",
+                        disabled: product.sold_out? %>
+        </div>
+
+        <div class="cart-line-price">
+          <span class="price"><%= price_vnd(product.price * quantity) %></span>
+          <%= button_to "Xoá", cart_item_path(product), method: :delete, class: "qty-remove" %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>

@@ -1,0 +1,47 @@
+<% content_for :title, "Danh mục" %>
+
+<div class="toolbar">
+  <%# .size trên relation có group() trả về Hash đếm theo nhóm, phải dùng .length %>
+  <p class="muted"><%= @categories.length %> danh mục</p>
+  <%= link_to "+ Thêm danh mục", new_admin_category_path, class: "btn btn-rust btn-compact" %>
+</div>
+
+<section class="panel">
+  <% if @categories.any? %>
+    <table class="admin-table">
+      <thead>
+        <tr><th>TT</th><th>Tên danh mục</th><th>Slug</th><th>Mô tả</th><th>Số sản phẩm</th><th></th></tr>
+      </thead>
+      <tbody>
+        <% @categories.each do |category| %>
+          <tr>
+            <td class="num muted"><%= category.position %></td>
+            <td><b><%= category.name %></b></td>
+            <td class="mono"><code><%= category.slug %></code></td>
+            <td class="muted"><%= category.description.presence || "—" %></td>
+            <td class="num">
+              <% if category.products_total.positive? %>
+                <%= link_to category.products_total, admin_products_path(category: category.slug) %>
+              <% else %>
+                <span class="muted">0</span>
+              <% end %>
+            </td>
+            <td class="actions">
+              <%= link_to "Sửa", edit_admin_category_path(category), class: "btn-sm" %>
+              <%= button_to "Xoá", admin_category_path(category), method: :delete,
+                            class: "btn-sm btn-danger",
+                            form: { data: { turbo_confirm: "Xoá danh mục \"#{category.name}\"?" } } %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p class="empty-note">Chưa có danh mục nào. Thêm danh mục trước rồi mới tạo sản phẩm được.</p>
+  <% end %>
+</section>
+
+<p class="field-hint" style="margin-top:14px">
+  Slug là phần hiện trên link trang bán hàng, ví dụ <code>/products?category=ao-khoac</code>.
+  Đổi slug sẽ làm hỏng link cũ đã chia sẻ hoặc đang chạy quảng cáo.
+</p>

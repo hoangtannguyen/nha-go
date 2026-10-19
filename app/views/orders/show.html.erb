@@ -1,0 +1,68 @@
+<% content_for :title, "Đơn hàng #{@order.code} — Nhà Gô" %>
+
+<section class="cart-page">
+  <div class="wrap">
+    <div class="order-done">
+      <div class="order-done-ico">🎉</div>
+      <h2 class="sec-title">Shop nhận đơn <span class="hand">rồi nha</span></h2>
+      <p class="sec-sub">Mã đơn của bạn là <b><%= @order.code %></b>. Shop sẽ nhắn Zalo xác nhận trong ít phút nữa.</p>
+    </div>
+
+    <div class="cart-grid">
+      <div class="cart-lines">
+        <% @order.order_items.each do |item| %>
+          <div class="cart-line">
+            <%= product_image_tag item.product, alt: item.name, class: "cart-thumb" %>
+
+            <div class="cart-info">
+              <span class="cat"><%= item.product.category_name %></span>
+              <h3><%= item.name %></h3>
+              <span class="meta"><%= item.product.size_label %> · x<%= item.quantity %></span>
+            </div>
+
+            <div class="cart-line-price">
+              <span class="price"><%= price_vnd(item.subtotal) %></span>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <aside class="checkout-card">
+        <h3>Thông tin giao hàng</h3>
+
+        <div class="cart-summary">
+          <div class="sum-line"><span>Người nhận</span><b><%= @order.customer_name %></b></div>
+          <div class="sum-line"><span>Điện thoại</span><b><%= @order.phone %></b></div>
+          <div class="sum-line"><span>Trạng thái</span><b><%= order_status_label(@order) %></b></div>
+          <div class="sum-line sum-total"><span>Tổng cộng</span><b><%= price_vnd(@order.total) %></b></div>
+        </div>
+
+        <% if @order.shipment? %>
+          <div class="cart-summary">
+            <div class="sum-line"><span>Vận chuyển</span><b><%= @order.carrier_name %></b></div>
+            <div class="sum-line"><span>Mã vận đơn</span><b><%= @order.tracking_code %></b></div>
+            <% if @order.carrier_status_label %>
+              <div class="sum-line"><span>Tình trạng giao</span><b><%= @order.carrier_status_label %></b></div>
+            <% end %>
+            <% if @order.carrier_status_updated_at %>
+              <div class="sum-line"><span>Cập nhật lúc</span><b><%= l @order.carrier_status_updated_at, format: :short %></b></div>
+            <% end %>
+          </div>
+          <p class="order-address">
+            Tra cứu trên GHTK: <%= link_to Ghtk::LOOKUP_URL, Ghtk::LOOKUP_URL, target: "_blank", rel: "noopener" %>
+          </p>
+        <% end %>
+
+        <p class="order-address"><%= @order.address %></p>
+        <% if @order.note.present? %>
+          <p class="order-address"><i>Ghi chú: <%= @order.note %></i></p>
+        <% end %>
+
+        <%= link_to "Nhắn Zalo xác nhận đơn",
+                    zalo_url("Nhà Gô ơi, mình vừa đặt đơn #{@order.code}, tổng #{price_vnd(@order.total)}."),
+                    class: "btn btn-rust", target: "_blank", rel: "noopener" %>
+        <%= link_to "Tiếp tục xem hàng", root_path(anchor: "hang-moi"), class: "btn btn-ghost" %>
+      </aside>
+    </div>
+  </div>
+</section>

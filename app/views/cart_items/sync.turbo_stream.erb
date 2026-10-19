@@ -1,0 +1,16 @@
+<%# Các target không tồn tại trên trang hiện tại sẽ được Turbo bỏ qua %>
+<%= turbo_stream.replace dom_id(@product, :cart_action) do %>
+  <%= render "shops/cart_action", product: @product %>
+<% end %>
+
+<%= turbo_stream.replace "cart_badge" do %>
+  <%= render "shared/cart_badge" %>
+<% end %>
+
+<%= turbo_stream.replace "cart_items_list" do %>
+  <%= render "carts/items" %>
+<% end %>
+
+<%= turbo_stream.replace "cart_summary" do %>
+  <%= render "carts/summary" %>
+<% end %>

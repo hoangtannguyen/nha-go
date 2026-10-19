@@ -1,0 +1,69 @@
+<% content_for :title, "Thành viên nhận tin" %>
+
+<div class="toolbar">
+  <div class="filter-chips">
+    <%= link_to "Tất cả (#{@active_count + @inactive_count})", admin_subscribers_path(q: params[:q]),
+                class: "chip #{"active" if @status.blank?}" %>
+    <%= link_to "Đang nhận tin (#{@active_count})", admin_subscribers_path(status: "active", q: params[:q]),
+                class: "chip #{"active" if @status == "active"}" %>
+    <%= link_to "Đã huỷ (#{@inactive_count})", admin_subscribers_path(status: "inactive", q: params[:q]),
+                class: "chip #{"active" if @status == "inactive"}" %>
+  </div>
+
+  <div class="toolbar-right">
+    <%= form_with url: admin_subscribers_path, method: :get, class: "search-form" do |form| %>
+      <%= form.hidden_field :status, value: @status %>
+      <%= form.search_field :q, value: params[:q], placeholder: "Tìm email, tên, SĐT..." %>
+      <%= form.submit "Tìm", class: "btn-sm" %>
+    <% end %>
+
+    <%= link_to "✉️ Gửi email hàng mới", broadcast_admin_subscribers_path, class: "btn btn-rust btn-compact" %>
+  </div>
+</div>
+
+<section class="panel">
+  <% if @subscribers.any? %>
+    <table class="admin-table">
+      <thead>
+        <tr><th>Email</th><th>Tên</th><th>SĐT</th><th>Trạng thái</th><th>Đã gửi</th><th>Đăng ký</th><th></th></tr>
+      </thead>
+      <tbody>
+        <% @subscribers.each do |subscriber| %>
+          <tr>
+            <td class="mono"><b><%= subscriber.email %></b></td>
+            <td><%= subscriber.name.presence || "—" %></td>
+            <td class="mono"><%= subscriber.phone.presence || "—" %></td>
+            <td>
+              <span class="status-badge <%= subscriber.active? ? "st-confirmed" : "st-cancelled" %>">
+                <%= subscriber.active? ? "Đang nhận tin" : "Đã huỷ" %>
+              </span>
+            </td>
+            <td class="num">
+              <%= subscriber.emails_sent_count %>
+              <% if subscriber.last_emailed_at %>
+                <span class="muted block"><%= l subscriber.last_emailed_at, format: :short %></span>
+              <% end %>
+            </td>
+            <td class="muted"><%= l subscriber.subscribed_at, format: :short %></td>
+            <td class="actions">
+              <%= button_to subscriber.active? ? "Tạm dừng" : "Bật lại",
+                            toggle_admin_subscriber_path(subscriber),
+                            method: :patch, class: "btn-sm" %>
+              <%= button_to "Xoá", admin_subscriber_path(subscriber), method: :delete,
+                            class: "btn-sm btn-danger",
+                            form: { data: { turbo_confirm: "Xoá #{subscriber.email} khỏi danh sách?" } } %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p class="empty-note">
+      <% if params[:q].present? %>
+        Không tìm thấy thành viên nào khớp "<%= params[:q] %>".
+      <% else %>
+        Chưa có ai đăng ký nhận tin. Nút "Đăng ký nhận tin" nằm ở đầu trang bán hàng.
+      <% end %>
+    </p>
+  <% end %>
+</section>

@@ -1,0 +1,14 @@
+<div id="cart_summary" class="cart-summary">
+  <div class="sum-line">
+    <span>Tạm tính (<%= current_cart.count %> món)</span>
+    <b><%= price_vnd(current_cart.total) %></b>
+  </div>
+  <div class="sum-line">
+    <span>Phí ship</span>
+    <b><%= current_cart.total >= 300_000 ? "Freeship nội thành" : "Shop báo sau" %></b>
+  </div>
+  <div class="sum-line sum-total">
+    <span>Tổng cộng</span>
+    <b><%= price_vnd(current_cart.total) %></b>
+  </div>
+</div>

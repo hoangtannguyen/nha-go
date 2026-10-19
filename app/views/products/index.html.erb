@@ -1,0 +1,73 @@
+<% content_for :title, @category ? "#{@category.name} — Nhà Gô" : "Tất cả sản phẩm — Nhà Gô" %>
+<% content_for :description, "Toàn bộ đồ secondhand đang có tại Nhà Gô: #{@total_count} món tuyển chọn, giặt sạch, ship toàn quốc." %>
+
+<section class="catalog">
+  <div class="wrap">
+    <p class="crumbs">
+      <%= link_to "Trang chủ", root_path %> ·
+      <span>Tất cả sản phẩm</span>
+    </p>
+
+    <header class="catalog-head">
+      <h1>Tất cả <span class="hand">hàng si</span></h1>
+      <p class="sec-sub">
+        <%= @total_count %> món đang có tại shop. Mỗi món chỉ một chiếc — ưng là nhắn liền kẻo hết.
+      </p>
+    </header>
+
+    <%# ===== bộ lọc danh mục ===== %>
+    <div class="chips">
+      <%= link_to products_path(sort: @sort),
+                  class: "chip #{"active" if @category.blank?}" do %>
+        Tất cả <span class="chip-count"><%= @total_count %></span>
+      <% end %>
+
+      <% @categories.each do |category| %>
+        <%= link_to products_path(category: category.slug, sort: @sort),
+                    class: "chip #{"active" if @category == category}" do %>
+          <%= category.name %> <span class="chip-count"><%= @counts_by_category.fetch(category.id, 0) %></span>
+        <% end %>
+      <% end %>
+    </div>
+
+    <%# ===== thanh sắp xếp ===== %>
+    <div class="catalog-bar">
+      <p class="catalog-count">
+        <% if @category %>
+          <b><%= @products.size %></b> món trong <b><%= @category.name %></b>
+        <% else %>
+          Đang hiện <b><%= @products.size %></b> món
+        <% end %>
+      </p>
+
+      <%= form_with url: products_path, method: :get, class: "sort-form",
+                    data: { controller: "auto-submit" } do |form| %>
+        <%= form.hidden_field :category, value: @category&.slug %>
+        <%= form.label :sort, "Sắp xếp:", class: "sort-label" %>
+        <%= form.select :sort,
+                        ProductsController::SORT_OPTIONS.map { |key, option| [ option[:label], key ] },
+                        { selected: @sort },
+                        class: "sort-select", data: { action: "change->auto-submit#submit" } %>
+        <noscript><%= form.submit "Áp dụng", class: "btn-sm" %></noscript>
+      <% end %>
+    </div>
+
+    <%# ===== lưới sản phẩm ===== %>
+    <% if @products.any? %>
+      <div class="grid">
+        <%= render partial: "shops/product", collection: @products, as: :product %>
+      </div>
+    <% else %>
+      <div class="catalog-empty">
+        <p>Danh mục này đang hết hàng rồi 👀</p>
+        <%= link_to "Xem tất cả món khác", products_path, class: "btn btn-rust" %>
+      </div>
+    <% end %>
+
+    <div class="catalog-foot">
+      <p>Không thấy món ưng? Nhắn shop, hàng về mỗi tuần và có thể giữ đồ theo yêu cầu.</p>
+      <%= link_to "Nhắn Zalo cho shop", zalo_url, class: "btn btn-olive", target: "_blank", rel: "noopener" %>
+      <%= link_to "← Về trang chủ", root_path, class: "btn btn-ghost" %>
+    </div>
+  </div>
+</section>

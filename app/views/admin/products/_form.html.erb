@@ -1,0 +1,168 @@
+<%= form_with model: [ :admin, product ], class: "checkout-form admin-form" do |form| %>
+  <% if product.errors.any? %>
+    <div class="form-errors">
+      <% product.errors.full_messages.each do |message| %>
+        <p><%= message %></p>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name, "Tên món" %>
+    <%= form.text_field :name, required: true, placeholder: "Áo khoác denim retro" %>
+  </div>
+
+  <div class="field-row">
+    <div class="field">
+      <%= form.label :category, "Danh mục" %>
+      <%= form.collection_select :category_id, Category.ordered, :id, :name,
+                                 { prompt: "— chọn danh mục —" },
+                                 { class: "admin-select", required: true } %>
+    </div>
+
+    <div class="field">
+      <%= form.label :price, "Giá (VND)" %>
+      <div class="input-suffix">
+        <%= form.text_field :price,
+                            value: (number_with_delimiter(product.price, delimiter: ".") if product.price),
+                            required: true,
+                            inputmode: "numeric",
+                            autocomplete: "off",
+                            placeholder: "285.000",
+                            data: { controller: "currency", action: "input->currency#format" } %>
+        <span class="suffix">đ</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="field">
+    <%= form.label :colors, "Màu sắc (chọn nhiều)" %>
+    <%= hidden_field_tag "product[colors][]", "", id: nil %>
+
+    <div class="opt-grid">
+      <% Product::COLOR_OPTIONS.each do |value, option| %>
+        <label class="opt-chip">
+          <%= check_box_tag "product[colors][]", value, product.colors.include?(value), id: "product_color_#{value}" %>
+          <% if option[:hex] %>
+            <span class="swatch" style="background:<%= option[:hex] %>"></span>
+          <% else %>
+            <span class="swatch swatch-multi"></span>
+          <% end %>
+          <span><%= option[:label] %></span>
+        </label>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="field">
+    <%= form.label :sizes, "Size có sẵn (chọn nhiều)" %>
+    <%= hidden_field_tag "product[sizes][]", "", id: nil %>
+
+    <% Product::SIZE_OPTIONS.each do |group, values| %>
+      <div class="opt-group">
+        <span class="opt-group-label"><%= group %></span>
+        <div class="opt-grid">
+          <% values.each do |value| %>
+            <label class="opt-chip opt-chip-sm">
+              <%= check_box_tag "product[sizes][]", value, product.sizes.include?(value), id: "product_size_#{value}" %>
+              <span><%= value %></span>
+            </label>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="field-row">
+    <div class="field">
+      <%= form.label :size_label, "Mô tả size hiển thị" %>
+      <%= form.text_field :size_label, placeholder: "Size L · Nam/Nữ (để trống nếu đã chọn size ở trên)" %>
+    </div>
+
+    <div class="field">
+      <%= form.label :tag, "Tag hiển thị" %>
+      <%= form.text_field :tag, placeholder: "HOT hoặc 1 món (để trống nếu không cần)" %>
+    </div>
+  </div>
+
+  <div class="field">
+    <%= form.label :position, "Thứ tự hiển thị" %>
+    <%= form.number_field :position, min: 0 %>
+  </div>
+
+  <div class="field" data-controller="reveal-toggle">
+    <label class="opt-chip">
+      <%= form.check_box :sold_out, data: { reveal_toggle_target: "source", action: "change->reveal-toggle#sync" } %>
+      <span>Đã bán hết</span>
+    </label>
+    <span class="field-hint">Món vẫn hiện ngoài shop (xếp cuối) kèm nhãn "Đã bán hết", khách không thêm vào giỏ / đặt được nữa.</span>
+
+    <div class="sub-option" data-reveal-toggle-target="panel" <%= "hidden" unless product.sold_out? %>>
+      <label class="opt-chip">
+        <%= form.check_box :hidden %>
+        <span>Ẩn khỏi trang bán hàng</span>
+      </label>
+      <span class="field-hint">Không hiện ở danh sách nữa, link cũ của món sẽ báo không tìm thấy. Bỏ tích "Đã bán hết" thì món tự hiện lại.</span>
+    </div>
+  </div>
+
+  <%# Khi save fail, product.photos còn chứa cả ảnh vừa chọn chưa lưu —
+      ảnh chưa lưu không có signed_id nên không render được. %>
+  <% saved_photos = product.persisted? ? product.photos.select(&:persisted?) : [] %>
+
+  <div class="field"
+       data-controller="photo-preview"
+       data-photo-preview-max-value="<%= Product::MAX_PHOTOS %>"
+       data-photo-preview-existing-value="<%= saved_photos.size %>"
+       data-photo-preview-max-size-value="<%= Product::MAX_PHOTO_SIZE %>">
+    <%= form.label :photos, "Ảnh sản phẩm (JPG/PNG/WEBP, mỗi ảnh tối đa 5MB, tối đa #{Product::MAX_PHOTOS} ảnh)" %>
+    <%# Kèm cả đuôi file: hộp thoại chọn file trên Windows lọc theo MIME hay ẩn mất ảnh %>
+    <%= form.file_field :photos,
+                        multiple: true,
+                        accept: "image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp",
+                        data: { photo_preview_target: "input", action: "change->photo-preview#preview" } %>
+    <span class="field-hint">Giữ Ctrl (hoặc Cmd) để chọn nhiều file cùng lúc. Ảnh đầu tiên là ảnh đại diện.</span>
+
+    <%# Trình duyệt không thể giữ lại file đã chọn khi form render lại vì lỗi validate %>
+    <% pending_photos = product.photos.reject(&:persisted?).size %>
+    <% if pending_photos > 0 %>
+      <p class="photo-warning">
+        <%= pending_photos %> ảnh vừa chọn chưa được lưu do form có lỗi ở trên. Vui lòng chọn lại file sau khi sửa.
+      </p>
+    <% end %>
+
+    <p class="photo-warning" data-photo-preview-target="warning" hidden></p>
+
+    <%# ảnh vừa chọn, chưa upload %>
+    <div class="photo-grid photo-grid-new" data-photo-preview-target="list" hidden></div>
+
+    <% if saved_photos.any? %>
+      <div class="photo-grid">
+        <% saved_photos.each_with_index do |photo, index| %>
+          <figure class="photo-item">
+            <%= image_tag photo, alt: "#{product.name} #{index + 1}" %>
+            <% if index.zero? %>
+              <span class="photo-badge">Ảnh đại diện</span>
+            <% end %>
+            <%# Phải là link_to, KHÔNG dùng button_to: button_to sinh <form> lồng trong
+                form_with, thẻ </form> của nó đóng luôn form cha và đẩy nút submit ra ngoài. %>
+            <%= link_to "Xoá", admin_product_photo_path(product, photo),
+                        class: "photo-remove",
+                        data: { turbo_method: :delete, turbo_confirm: "Xoá ảnh này?" } %>
+          </figure>
+        <% end %>
+      </div>
+      <span class="field-hint">Đang có <%= saved_photos.size %> ảnh. Chọn thêm file sẽ bổ sung, không ghi đè.</span>
+    <% elsif product.image.present? %>
+      <div class="photo-preview">
+        <%= image_tag product.image, alt: product.name %>
+        <span class="muted">Đang dùng ảnh tĩnh <code><%= product.image %></code></span>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="form-actions">
+    <%= form.submit product.new_record? ? "Thêm sản phẩm" : "Lưu thay đổi", class: "btn btn-rust" %>
+    <%= link_to "Huỷ", admin_products_path, class: "btn btn-ghost" %>
+  </div>
+<% end %>

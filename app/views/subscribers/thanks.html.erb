@@ -1,0 +1,19 @@
+<% content_for :title, "Đăng ký thành công — Nhà Gô" %>
+
+<section class="signup">
+  <div class="wrap">
+    <div class="signup-done">
+      <div class="signup-done-ico">📬</div>
+      <h1>Xong rồi <span class="hand">nha</span></h1>
+      <p class="sec-sub">
+        Shop đã lưu email của bạn. Lô đồ si tới vừa về là báo liền,
+        và mỗi email đều có nút huỷ nếu bạn đổi ý.
+      </p>
+
+      <div class="signup-done-actions">
+        <%= link_to "Xem hàng đang có", products_path, class: "btn btn-rust" %>
+        <%= link_to "← Về trang chủ", root_path, class: "btn btn-ghost" %>
+      </div>
+    </div>
+  </div>
+</section>

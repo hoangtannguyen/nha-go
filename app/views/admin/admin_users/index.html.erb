@@ -1,0 +1,43 @@
+<% content_for :title, "Tài khoản admin" %>
+
+<div class="toolbar">
+  <p class="muted"><%= @admin_users.size %> tài khoản quản trị</p>
+  <%= link_to "+ Thêm tài khoản", new_admin_admin_user_path, class: "btn btn-rust btn-compact" %>
+</div>
+
+<section class="panel">
+  <table class="admin-table">
+    <thead>
+      <tr><th>Tên</th><th>Email</th><th>Trạng thái</th><th>Đăng nhập gần nhất</th><th></th></tr>
+    </thead>
+    <tbody>
+      <% @admin_users.each do |admin_user| %>
+        <tr>
+          <td>
+            <b><%= admin_user.name %></b>
+            <% if admin_user == current_admin %>
+              <span class="muted">(bạn)</span>
+            <% end %>
+          </td>
+          <td class="mono"><%= admin_user.email %></td>
+          <td>
+            <span class="status-badge <%= admin_user.active? ? "st-confirmed" : "st-cancelled" %>">
+              <%= admin_user.active? ? "Đang hoạt động" : "Đã khoá" %>
+            </span>
+          </td>
+          <td class="muted">
+            <%= admin_user.last_login_at ? l(admin_user.last_login_at, format: :short) : "chưa đăng nhập" %>
+          </td>
+          <td class="actions">
+            <%= link_to "Sửa", edit_admin_admin_user_path(admin_user), class: "btn-sm" %>
+            <% unless admin_user == current_admin %>
+              <%= button_to "Xoá", admin_admin_user_path(admin_user), method: :delete,
+                            class: "btn-sm btn-danger",
+                            form: { data: { turbo_confirm: "Xoá tài khoản #{admin_user.name}?" } } %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</section>

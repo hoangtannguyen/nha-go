@@ -1,0 +1,36 @@
+<header data-controller="menu">
+  <div class="wrap nav">
+    <%= link_to root_path, class: "brand" do %><%= image_tag "logo.webp", alt: "Nhà Gô" %><% end %>
+
+    <nav class="nav-links" data-controller="nav">
+      <%= link_to "Hàng mới", root_path(anchor: "hang-moi"), data: { nav_target: "link", action: "nav#select" } %>
+      <%= link_to "Tất cả sản phẩm", products_path, data: { nav_target: "link", action: "nav#select" } %>
+      <%= link_to "Về Nhà Gô", root_path(anchor: "ve-nha-go"), data: { nav_target: "link", action: "nav#select" } %>
+      <%= link_to "Liên hệ", root_path(anchor: "lien-he"), data: { nav_target: "link", action: "nav#select" } %>
+    </nav>
+
+    <div class="nav-actions">
+      <%= link_to "Đăng ký nhận tin", new_subscriber_path, class: "btn btn-olive btn-nav" %>
+      <%= render "shared/cart_badge" %>
+      <%= link_to "Nhắn Zalo", zalo_url, class: "btn btn-rust" %>
+    </div>
+
+    <button class="burger" aria-label="Mở menu" data-action="click->menu#toggle">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <div class="mobile-menu" data-menu-target="menu">
+    <%= link_to "Hàng mới", root_path(anchor: "hang-moi"), data: { action: "click->menu#close" } %>
+    <%= link_to "Tất cả sản phẩm", products_path, data: { action: "click->menu#close" } %>
+    <%= link_to "Về Nhà Gô", root_path(anchor: "ve-nha-go"), data: { action: "click->menu#close" } %>
+    <%= link_to "Liên hệ", root_path(anchor: "lien-he"), data: { action: "click->menu#close" } %>
+    <%= link_to "Giỏ hàng (#{current_cart.count})", cart_path, data: { action: "click->menu#close" } %>
+    <%= link_to "Đăng ký nhận tin hàng mới", new_subscriber_path,
+                style: "color:var(--olive-dark);font-weight:800",
+                data: { action: "click->menu#close" } %>
+    <%= link_to "Nhắn Zalo chốt đơn →", zalo_url,
+                style: "color:var(--rust);font-weight:800",
+                data: { action: "click->menu#close" } %>
+  </div>
+</header>

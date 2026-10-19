@@ -1,0 +1,112 @@
+<% content_for :title, "#{@product.name} — Nhà Gô" %>
+
+<section class="pdp">
+  <div class="wrap">
+    <p class="crumbs">
+      <%= link_to "Trang chủ", root_path %> ·
+      <%= link_to @product.category_name, root_path(anchor: "hang-moi") %> ·
+      <span><%= @product.name %></span>
+    </p>
+
+    <div class="pdp-grid">
+      <%# ===== thư viện ảnh ===== %>
+      <div class="pdp-gallery" data-controller="gallery">
+        <div class="pdp-main">
+          <% if @product.main_photo %>
+            <%= image_tag @product.main_photo, alt: @product.name, data: { gallery_target: "main" } %>
+          <% elsif @product.image.present? %>
+            <%= image_tag @product.image, alt: @product.name, data: { gallery_target: "main" } %>
+          <% else %>
+            <div class="img-fallback">👕</div>
+          <% end %>
+
+          <% if @product.sold_out? %>
+            <span class="sold-badge">Đã bán hết</span>
+          <% elsif @product.tag.present? %>
+            <span class="tag <%= "new" if @product.hot? %>"><%= @product.tag %></span>
+          <% end %>
+        </div>
+
+        <% if @product.photos_count > 1 %>
+          <div class="pdp-thumbs">
+            <% @product.photos.each_with_index do |photo, index| %>
+              <button type="button"
+                      class="pdp-thumb <%= "is-active" if index.zero? %>"
+                      data-gallery-target="thumb"
+                      data-full="<%= url_for(photo) %>"
+                      data-action="click->gallery#select">
+                <%= image_tag photo, alt: "#{@product.name} #{index + 1}" %>
+              </button>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+
+      <%# ===== thông tin ===== %>
+      <div class="pdp-info">
+        <span class="cat"><%= @product.category_name %></span>
+        <h1><%= @product.name %></h1>
+        <div class="pdp-price"><%= price_vnd(@product.price) %></div>
+
+        <% if @product.sizes.any? %>
+          <div class="pdp-block">
+            <span class="pdp-label">Size có sẵn</span>
+            <div class="pdp-options">
+              <% @product.sizes.each do |size| %>
+                <span class="pdp-opt"><%= size %></span>
+              <% end %>
+            </div>
+          </div>
+        <% elsif @product.size_label.present? %>
+          <div class="pdp-block">
+            <span class="pdp-label">Size</span>
+            <p class="pdp-text"><%= @product.size_label %></p>
+          </div>
+        <% end %>
+
+        <% if @product.colors.any? %>
+          <div class="pdp-block">
+            <span class="pdp-label">Màu sắc</span>
+            <div class="pdp-options">
+              <% @product.color_swatches.each do |swatch| %>
+                <span class="pdp-opt">
+                  <span class="swatch <%= "swatch-multi" if swatch[:hex].nil? %>"
+                        style="<%= "background:#{swatch[:hex]}" if swatch[:hex] %>"></span>
+                  <%= swatch[:label] %>
+                </span>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <div class="pdp-actions">
+          <%= render "shops/cart_action", product: @product %>
+          <% unless @product.sold_out? %>
+            <%= link_to "Nhắn mua qua Zalo",
+                        zalo_url("Nhà Gô ơi, mình muốn mua món: #{@product.name}"),
+                        class: "btn btn-rust", target: "_blank", rel: "noopener" %>
+          <% end %>
+          <button type="button" class="btn btn-ghost"
+                  data-controller="clipboard" data-clipboard-text-value="<%= product_url(@product) %>"
+                  data-action="clipboard#copy">🔗 Copy link sản phẩm</button>
+        </div>
+
+        <ul class="pdp-notes">
+          <li>♻️ Hàng si tuyển chọn, đã giặt sạch và hấp phẳng</li>
+          <li>🚚 Ship toàn quốc, COD — freeship nội thành đơn từ 200.000đ</li>
+          <li>⏳ Mỗi món chỉ có 1 chiếc, shop giữ đồ 24h sau khi chốt</li>
+        </ul>
+      </div>
+    </div>
+
+    <%# ===== gợi ý thêm ===== %>
+    <% if @related.any? %>
+      <div class="pdp-related">
+        <h2 class="sec-title">Món <span class="hand">cùng loại</span></h2>
+        <div class="grid">
+          <%= render partial: "shops/product", collection: @related, as: :product %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</section>
