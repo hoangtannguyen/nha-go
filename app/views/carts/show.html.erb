@@ -27,21 +27,17 @@
             </div>
           <% end %>
 
-          <div class="field">
-            <%= form.label :customer_name, "Họ và tên" %>
-            <%= form.text_field :customer_name, placeholder: "Nguyễn Văn A", required: true, autocomplete: "name" %>
-          </div>
+          <div class="field-row">
+            <div class="field">
+              <%= form.label :customer_name, "Họ và tên" %>
+              <%= form.text_field :customer_name, placeholder: "Nguyễn Văn A", required: true, autocomplete: "name" %>
+            </div>
 
-          <div class="field">
-            <%= form.label :phone, "Số điện thoại / Zalo" %>
-            <%= form.telephone_field :phone, placeholder: "0901234567", required: true,
-                                     autocomplete: "tel", inputmode: "tel" %>
-          </div>
-
-          <div class="field">
-            <%= form.label :email, "Email (không bắt buộc)" %>
-            <%= form.email_field :email, placeholder: "ban@example.com", autocomplete: "email" %>
-            <span class="field-hint">Để nhận mã vận đơn qua email khi shop gửi hàng.</span>
+            <div class="field">
+              <%= form.label :phone, "Số điện thoại / Zalo" %>
+              <%= form.telephone_field :phone, placeholder: "0901234567", required: true,
+                                       autocomplete: "tel", inputmode: "tel" %>
+            </div>
           </div>
 
           <div class="field">
@@ -76,9 +72,18 @@
             </div>
           </div>
 
-          <div class="field">
-            <%= form.label :note, "Ghi chú (không bắt buộc)" %>
-            <%= form.text_area :note, rows: 2, placeholder: "Giao giờ hành chính, gọi trước khi tới..." %>
+          <%# Các ô không bắt buộc để cuối cho khách điền nhanh phần chính %>
+          <div class="field-row field-row-optional">
+            <div class="field">
+              <%= form.label :email, "Email (không bắt buộc)" %>
+              <%= form.email_field :email, placeholder: "ban@example.com", autocomplete: "email" %>
+              <span class="field-hint">Để nhận mã vận đơn khi shop gửi hàng.</span>
+            </div>
+
+            <div class="field">
+              <%= form.label :note, "Ghi chú (không bắt buộc)" %>
+              <%= form.text_area :note, rows: 1, placeholder: "Gọi trước khi giao..." %>
+            </div>
           </div>
 
           <%= form.submit "Gửi yêu cầu tư vấn", class: "btn btn-rust", disabled: current_cart.empty? %>

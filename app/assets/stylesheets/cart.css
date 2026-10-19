@@ -264,3 +264,26 @@
   .pdp-price{margin-bottom:18px}
   .catalog-foot .btn{width:100%;justify-content:center;margin:0 0 10px}
 }
+
+/* ===== form đặt hàng gọn hơn ===== */
+@media(min-width:901px){
+  /* nới cột checkout để .field-row đủ chỗ chia 2 cột */
+  .cart-grid{grid-template-columns:1.1fr .9fr;gap:32px}
+}
+.checkout-card{padding:24px}
+.checkout-card h3{margin-bottom:10px}
+.cart-summary{padding-top:8px;margin-bottom:14px}
+.sum-line{padding:4px 0}
+.sum-total{padding-top:10px}
+.checkout-form .field{margin-bottom:10px}
+.checkout-form .field-row .field{margin-bottom:0}
+.checkout-form .field-row{margin-bottom:10px;align-items:start}
+.checkout-form label{font-size:.82rem;margin-bottom:4px}
+.checkout-form input,.checkout-form textarea,.checkout-form .form-select{padding-top:9px;padding-bottom:9px}
+.checkout-form textarea{min-height:42px}
+.field-row-optional{padding-top:10px;border-top:1px dashed rgba(46,42,36,.15)}
+.checkout-form .btn{margin-top:4px}
+
+@media(max-width:560px){
+  .checkout-card{padding:18px 16px}
+}
