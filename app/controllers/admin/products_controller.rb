@@ -60,12 +60,14 @@ module Admin
     end
 
     def product_params
-      attributes = params.expect(product: [ :name, :category_id, :tag, :size_label, :price, :position, :sold_out, :hidden,
+      attributes = params.expect(product: [ :name, :category_id, :tag, :size_label, :price, :sale_price, :position, :sold_out, :hidden,
                                             { colors: [], sizes: [], photos: [] } ])
 
       # "285.000" từ ô nhập có phân cách -> 285000, phải bỏ dấu TRƯỚC khi gán
       # vì gán thẳng vào cột integer sẽ bị cắt thành 285.
-      attributes[:price] = attributes[:price].to_s.gsub(/\D/, "") if attributes.key?(:price)
+      %i[price sale_price].each do |key|
+        attributes[key] = attributes[key].to_s.gsub(/\D/, "") if attributes.key?(key)
+      end
 
       attributes.except(:photos)
     end

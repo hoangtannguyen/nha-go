@@ -60,7 +60,7 @@ class Cart
   end
 
   def total
-    entries.sum { |product, quantity| product.price * quantity }
+    entries.sum { |product, quantity| product.selling_price * quantity }
   end
 
   def empty?

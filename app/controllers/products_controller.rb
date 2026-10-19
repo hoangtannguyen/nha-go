@@ -3,8 +3,8 @@ class ProductsController < ApplicationController
   SORT_OPTIONS = {
     "noi-bat"  => { label: "Nổi bật",        order: { position: :asc, id: :asc } },
     "moi-nhat" => { label: "Mới nhất",       order: { created_at: :desc, id: :desc } },
-    "gia-thap" => { label: "Giá thấp → cao", order: { price: :asc, id: :asc } },
-    "gia-cao"  => { label: "Giá cao → thấp", order: { price: :desc, id: :desc } }
+    "gia-thap" => { label: "Giá thấp → cao", order: Arel.sql("COALESCE(products.sale_price, products.price) ASC, products.id ASC") },
+    "gia-cao"  => { label: "Giá cao → thấp", order: Arel.sql("COALESCE(products.sale_price, products.price) DESC, products.id DESC") }
   }.freeze
 
   DEFAULT_SORT = "noi-bat".freeze

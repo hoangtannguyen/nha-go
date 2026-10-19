@@ -58,7 +58,12 @@
                 <span class="status-badge st-cancelled">Đã ẩn</span>
               <% end %>
             </td>
-            <td class="num"><%= price_vnd(product.price) %></td>
+            <td class="num">
+              <%= price_vnd(product.selling_price) %>
+              <% if product.on_sale? %>
+                <br><del class="muted"><%= price_vnd(product.price) %></del>
+              <% end %>
+            </td>
             <td class="num muted"><%= product.position %></td>
             <td class="actions">
               <%= link_to "Sửa", edit_admin_product_path(product), class: "btn-sm" %>

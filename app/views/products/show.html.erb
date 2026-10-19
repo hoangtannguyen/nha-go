@@ -56,7 +56,12 @@
       <div class="pdp-info">
         <span class="cat"><%= @product.category_name %></span>
         <h1><%= @product.name %></h1>
-        <div class="pdp-price"><%= price_vnd(@product.price) %></div>
+        <div class="pdp-price">
+          <%= price_vnd(@product.selling_price) %>
+          <% if @product.on_sale? %>
+            <del class="price-old"><%= price_vnd(@product.price) %></del>
+          <% end %>
+        </div>
 
         <% if @product.sizes.any? %>
           <div class="pdp-block">

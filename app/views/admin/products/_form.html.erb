@@ -33,6 +33,20 @@
         <span class="suffix">đ</span>
       </div>
     </div>
+
+    <div class="field">
+      <%= form.label :sale_price, "Giá khuyến mãi (VND)" %>
+      <div class="input-suffix">
+        <%= form.text_field :sale_price,
+                            value: (number_with_delimiter(product.sale_price, delimiter: ".") if product.sale_price),
+                            inputmode: "numeric",
+                            autocomplete: "off",
+                            placeholder: "Để trống nếu không giảm giá",
+                            data: { controller: "currency", action: "input->currency#format" } %>
+        <span class="suffix">đ</span>
+      </div>
+      <span class="field-hint">Phải nhỏ hơn giá gốc. Ngoài shop sẽ hiện giá này kèm giá gốc gạch ngang.</span>
+    </div>
   </div>
 
   <div class="field">

@@ -36,7 +36,7 @@ class OrdersController < ApplicationController
       order.order_items.build(
         product: product,
         name: product.name,
-        price: product.price,
+        price: product.selling_price,
         quantity: quantity
       )
     end

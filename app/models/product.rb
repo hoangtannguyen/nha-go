@@ -34,6 +34,8 @@ class Product < ApplicationRecord
 
   validates :name, presence: { message: "không được để trống" }
   validates :price, numericality: { greater_than_or_equal_to: 0, only_integer: true }
+  validates :sale_price, numericality: { greater_than_or_equal_to: 0, only_integer: true }, allow_nil: true
+  validate :sale_price_below_price
   validate :photos_must_be_images
   validate :colors_must_be_known
   validate :sizes_must_be_known
@@ -50,6 +52,15 @@ class Product < ApplicationRecord
 
   def hot?
     tag == "HOT"
+  end
+
+  def on_sale?
+    sale_price.present? && sale_price < price
+  end
+
+  # Giá khách thực trả: giỏ hàng, đơn hàng, sắp xếp đều dùng giá này
+  def selling_price
+    on_sale? ? sale_price : price
   end
 
   # Ảnh đầu tiên dùng làm ảnh đại diện ngoài danh sách
@@ -91,6 +102,12 @@ class Product < ApplicationRecord
   def clean_option_lists
     self.colors = Array(colors).map(&:to_s).reject(&:blank?).uniq
     self.sizes = Array(sizes).map(&:to_s).reject(&:blank?).uniq
+  end
+
+  def sale_price_below_price
+    return if sale_price.nil? || price.nil?
+
+    errors.add(:sale_price, "phải nhỏ hơn giá gốc") if sale_price >= price
   end
 
   def colors_must_be_known
