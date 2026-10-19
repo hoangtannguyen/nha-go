@@ -43,8 +43,15 @@
 
     <%= render "shared/footer" %>
 
-    <div class="sticky-cta">
-      <%= link_to "Nhắn Zalo chốt đơn", zalo_url, class: "btn btn-rust" %>
-    </div>
+    <%# Trang có thể đổi nội dung (content_for :sticky_cta) hoặc tắt hẳn (content_for :hide_sticky_cta) %>
+    <% unless content_for?(:hide_sticky_cta) %>
+      <div class="sticky-cta">
+        <% if content_for?(:sticky_cta) %>
+          <%= yield :sticky_cta %>
+        <% else %>
+          <%= link_to "Nhắn Zalo chốt đơn", zalo_url, class: "btn btn-rust" %>
+        <% end %>
+      </div>
+    <% end %>
   </body>
 </html>

@@ -1,4 +1,6 @@
 <% content_for :title, "Giỏ hàng — Nhà Gô" %>
+<%# Ẩn nút Zalo nổi để không đè lên form đặt hàng trên mobile %>
+<% content_for :hide_sticky_cta, true %>
 
 <section class="cart-page">
   <div class="wrap">
@@ -27,12 +29,13 @@
 
           <div class="field">
             <%= form.label :customer_name, "Họ và tên" %>
-            <%= form.text_field :customer_name, placeholder: "Nguyễn Văn A", required: true %>
+            <%= form.text_field :customer_name, placeholder: "Nguyễn Văn A", required: true, autocomplete: "name" %>
           </div>
 
           <div class="field">
             <%= form.label :phone, "Số điện thoại / Zalo" %>
-            <%= form.telephone_field :phone, placeholder: "0901234567", required: true %>
+            <%= form.telephone_field :phone, placeholder: "0901234567", required: true,
+                                     autocomplete: "tel", inputmode: "tel" %>
           </div>
 
           <div class="field">
@@ -43,7 +46,7 @@
 
           <div class="field">
             <%= form.label :street, "Số nhà, tên đường" %>
-            <%= form.text_field :street, placeholder: "97 Ngô Đức Kế", required: true %>
+            <%= form.text_field :street, placeholder: "97 Ngô Đức Kế", required: true, autocomplete: "address-line1" %>
           </div>
 
           <div class="field-row" data-controller="address-select"

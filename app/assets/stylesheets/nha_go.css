@@ -134,7 +134,7 @@
     .about .imgbox{order:-1}
   }
   @media(max-width:560px){
-    .grid{grid-template-columns:1fr}
+    .grid{grid-template-columns:repeat(2,1fr);gap:12px}
     .hero{padding-top:32px}
     .hero-stats{gap:22px;flex-wrap:wrap}
     .sticky-cta{display:flex}

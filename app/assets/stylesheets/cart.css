@@ -204,3 +204,63 @@
 /* Hai ô tỉnh/phường: tự xuống dòng theo bề rộng CARD chứ không theo viewport,
    vì cột checkout vốn đã hẹp (~330px) nên ép 2 cột sẽ cắt mất chữ. */
 .checkout-form .field-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+
+/* ===== chi tiết nhỏ bị thiếu style ===== */
+.field-hint{display:block;margin-top:5px;font-size:.78rem;color:var(--muted)}
+.swatch{display:inline-block;width:14px;height:14px;border-radius:50%;border:1px solid rgba(46,42,36,.2);flex-shrink:0}
+.swatch-multi{background:conic-gradient(#c1502e,#e8b04b,#5a6b3b,#2c4257,#c1502e)}
+
+/* màn hình cảm ứng: bỏ hiệu ứng nhấc card để không bị "dính" hover sau khi chạm */
+@media(hover:none){
+  .card:hover,.feat:hover,.btn-rust:hover,.btn-olive:hover{transform:none}
+  .card:hover .ph img{transform:none}
+}
+
+/* ===== tối ưu mobile cho người mua ===== */
+@media(max-width:900px){
+  /* chips danh mục: 1 hàng, vuốt ngang thay vì xuống nhiều dòng */
+  .chips{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin-left:-4%;margin-right:-4%;padding:2px 4% 4px}
+  .chips::-webkit-scrollbar{display:none}
+  .chip{flex-shrink:0;white-space:nowrap}
+
+  /* ảnh phụ: vuốt ngang */
+  .pdp-thumbs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+  .pdp-thumbs::-webkit-scrollbar{display:none}
+  .pdp-thumb{flex-shrink:0}
+}
+
+@media(max-width:560px){
+  /* chừa chỗ cho nút Zalo nổi */
+  footer{padding-bottom:96px}
+
+  /* iOS tự zoom khi focus input < 16px */
+  .checkout-form input,.checkout-form textarea,.form-select,.sort-select{font-size:16px}
+
+  /* card gọn cho lưới 2 cột */
+  .card{border-radius:14px}
+  .card .tag,.sold-badge{top:8px;left:8px;font-size:.68rem;padding:3px 9px}
+  .photo-count{bottom:8px;right:8px;font-size:.68rem;padding:3px 8px}
+  .card .body{padding:10px 10px 12px;gap:4px}
+  .card .cat{font-size:.66rem;letter-spacing:.3px}
+  .card h3{font-size:.9rem;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .card .meta{font-size:.76rem;line-height:1.4}
+  .card .row{flex-wrap:wrap;gap:6px;padding-top:6px}
+  .price{font-size:.98rem}
+  .row-actions{width:100%}
+  .row-actions .buy{flex:1;text-align:center;padding:9px 10px}
+  .add-cart{padding:9px 8px;font-size:.8rem;line-height:1.3}
+  .card .ph .img-fallback{font-size:2.4rem}
+
+  /* sắp xếp: chiếm hết hàng cho dễ bấm */
+  .catalog-bar{gap:10px}
+  .sort-form{width:100%}
+  .sort-select{flex:1}
+
+  /* giỏ hàng: nút bấm đủ lớn cho ngón tay */
+  .qty-btn{width:40px;height:40px}
+  .qty-remove{padding:8px 4px}
+
+  .pdp-thumb{width:64px;height:64px}
+  .pdp-price{margin-bottom:18px}
+  .catalog-foot .btn{width:100%;justify-content:center;margin:0 0 10px}
+}

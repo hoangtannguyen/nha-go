@@ -1,10 +1,20 @@
 <% content_for :title, "#{@product.name} — Nhà Gô" %>
+<% if @product.sold_out? %>
+  <% content_for :sticky_cta do %>
+    <%= link_to "Xem món khác cùng loại", products_path(category: @product.category_slug), class: "btn btn-olive" %>
+  <% end %>
+<% else %>
+  <% content_for :sticky_cta do %>
+    <%= link_to "Nhắn Zalo mua món này", zalo_url("Nhà Gô ơi, mình muốn mua món: #{@product.name}"),
+                class: "btn btn-rust", target: "_blank", rel: "noopener" %>
+  <% end %>
+<% end %>
 
 <section class="pdp">
   <div class="wrap">
     <p class="crumbs">
       <%= link_to "Trang chủ", root_path %> ·
-      <%= link_to @product.category_name, root_path(anchor: "hang-moi") %> ·
+      <%= link_to @product.category_name, products_path(category: @product.category_slug) %> ·
       <span><%= @product.name %></span>
     </p>
 
