@@ -59,7 +59,7 @@ Rails.application.configure do
 
   # Set host to be used by links generated in mailer templates.
   config.action_mailer.default_url_options = { host: "example.com" }
-
+  config.active_job.queue_adapter = :inline
   config.action_mailer.delivery_method = :resend
   config.action_mailer.perform_caching = false
   config.action_mailer.raise_delivery_errors = true
