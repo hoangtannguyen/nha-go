@@ -1,6 +1,6 @@
 module Admin
   class OrdersController < BaseController
-    before_action :set_order, only: [ :show, :update ]
+    before_action :set_order, only: [ :show, :update, :destroy ]
 
     def index
       @status = params[:status].presence_in(Order.statuses.keys)
@@ -34,6 +34,23 @@ module Admin
       @order_items = @order.order_items.includes(:product)
       flash.now[:alert] = "Chưa tạo được vận đơn GHTK nên đơn chưa chuyển sang Đang giao: #{e.message}"
       render :show, status: :unprocessable_content
+    end
+
+    # Dùng để dọn đơn spam. Đơn đã có vận đơn GHTK thì không xoá để khỏi mất dấu vận đơn bên hãng vận chuyển.
+    def destroy
+      if @order.shipment?
+        redirect_to admin_order_path(@order),
+                    alert: "Không xoá được đơn #{@order.code} vì đã tạo vận đơn GHTK.", status: :see_other
+        return
+      end
+
+      Order.transaction do
+        customer = @order.customer
+        @order.destroy!
+        # Khách chỉ sinh ra từ đơn spam này thì xoá luôn cho sạch danh sách khách hàng
+        customer.destroy! if customer && !customer.orders.exists?
+      end
+      redirect_to admin_orders_path, notice: "Đã xoá đơn #{@order.code}.", status: :see_other
     end
 
     private

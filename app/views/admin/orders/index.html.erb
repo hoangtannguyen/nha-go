@@ -22,7 +22,7 @@
   <% if @orders.any? %>
     <table class="admin-table">
       <thead>
-        <tr><th>Mã đơn</th><th>Khách hàng</th><th>SĐT</th><th>Số món</th><th>Tổng</th><th>Trạng thái</th><th>Đặt lúc</th></tr>
+        <tr><th>Mã đơn</th><th>Khách hàng</th><th>SĐT</th><th>Số món</th><th>Tổng</th><th>Trạng thái</th><th>Đặt lúc</th><th></th></tr>
       </thead>
       <tbody>
         <% @orders.each do |order| %>
@@ -40,6 +40,13 @@
             <td class="num"><%= price_vnd(order.total) %></td>
             <td><%= order_status_badge(order) %></td>
             <td class="muted"><%= l order.created_at, format: :short %></td>
+            <td class="actions">
+              <% unless order.shipment? %>
+                <%= button_to "Xoá", admin_order_path(order), method: :delete,
+                              class: "btn-sm btn-danger",
+                              form: { data: { turbo_confirm: "Xoá đơn #{order.code} của #{order.customer_name}? Không khôi phục được." } } %>
+              <% end %>
+            </td>
           </tr>
         <% end %>
       </tbody>

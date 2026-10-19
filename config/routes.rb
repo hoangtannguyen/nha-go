@@ -33,7 +33,7 @@ Rails.application.routes.draw do
     post "login", to: "sessions#create"
     delete "logout", to: "sessions#destroy"
 
-    resources :orders, only: [ :index, :show, :update ], param: :code
+    resources :orders, only: [ :index, :show, :update, :destroy ], param: :code
     resources :products, except: [ :show ] do
       resources :photos, only: [ :destroy ], controller: "product_photos"
     end
