@@ -68,9 +68,7 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: 'nha-go.onrender.com', protocol: 'https' }
 
   # Cấu hình Resend API Key từ biến môi trường trên Render
-  config.action_mailer.resend_settings = {
-    api_key: ENV['RESEND_API_KEY']
-  }
+  Resend.api_key = ENV['RESEND_API_KEY']
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
