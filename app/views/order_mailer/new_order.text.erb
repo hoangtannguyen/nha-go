@@ -1,5 +1,5 @@
 CÓ ĐƠN MỚI: <%= @order.code %>
-Đặt lúc <%= l @order.created_at, format: :long %>
+Đặt lúc <%= vietnam_time(@order.created_at, format: :long) %>
 
 Khách hàng: <%= @order.customer_name %>
 Điện thoại: <%= @order.phone %>

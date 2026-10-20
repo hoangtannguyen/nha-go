@@ -3,7 +3,7 @@ Chào <%= @order.customer_name %>, đơn của bạn đã được gửi đi.
 Mã đơn hàng:       <%= @order.code %>
 Mã vận đơn:        <%= @order.tracking_code %>
 Đơn vị vận chuyển: <%= @order.carrier_name %>
-Thời điểm gửi:     <%= l @order.shipment_created_at, format: :long %>
+Thời điểm gửi:     <%= vietnam_time(@order.shipment_created_at, format: :long) %>
 <% if @order.estimated_deliver_time.present? -%>
 Dự kiến giao:      <%= @order.estimated_deliver_time %>
 <% end -%>

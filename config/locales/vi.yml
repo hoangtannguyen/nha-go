@@ -1,0 +1,5 @@
+vi:
+  time:
+    formats:
+      short: "%d/%m/%Y %H:%M"
+      long: "%H:%M, ngày %d tháng %m năm %Y"

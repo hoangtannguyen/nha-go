@@ -20,7 +20,7 @@
 
       <div style="font-size:13px;color:#8a7f6d">Thời điểm gửi</div>
       <div style="font-size:14px;margin-bottom:<%= @order.estimated_deliver_time.present? ? "10px" : "0" %>">
-        <%= l @order.shipment_created_at, format: :long %>
+        <%= vietnam_time(@order.shipment_created_at, format: :long) %>
       </div>
 
       <% if @order.estimated_deliver_time.present? %>

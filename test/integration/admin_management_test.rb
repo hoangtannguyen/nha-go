@@ -44,6 +44,28 @@ class AdminManagementTest < ActionDispatch::IntegrationTest
     assert_equal "confirmed", order.reload.status
   end
 
+  test "hiển thị ngày giờ theo định dạng tiếng Việt" do
+    order = create_order
+    order.update_column(:created_at, Time.utc(2026, 10, 20, 8, 57))
+
+    get admin_order_path(order)
+
+    assert_response :success
+    assert_match "15:57, ngày 20 tháng 10 năm 2026", response.body
+    assert_no_match "October", response.body
+  end
+
+  test "dashboard hiển thị giờ UTC theo múi giờ Việt Nam" do
+    order = create_order
+    order.update_column(:created_at, Time.utc(2026, 10, 20, 9, 6))
+
+    get admin_root_path
+
+    assert_response :success
+    assert_match "20/10/2026 16:06", response.body
+    assert_no_match "20/10/2026 09:06", response.body
+  end
+
   # ===== sản phẩm =====
 
   test "tạo sản phẩm mới kèm upload ảnh" do

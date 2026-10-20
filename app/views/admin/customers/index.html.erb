@@ -23,7 +23,7 @@
             <td class="num"><%= customer.orders_total %></td>
             <td class="num"><%= price_vnd(customer.spent_total) %></td>
             <td class="muted">
-              <%= customer.last_order_at ? l(customer.last_order_at.to_datetime, format: :short) : "—" %>
+              <%= customer.last_order_at ? vietnam_time(customer.last_order_at.to_datetime) : "—" %>
             </td>
           </tr>
         <% end %>

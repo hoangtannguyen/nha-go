@@ -61,7 +61,7 @@
       <% end %>
 
       <dt>Đặt lúc</dt>
-      <dd><%= l @order.created_at, format: :long %></dd>
+      <dd><%= vietnam_time(@order.created_at, format: :long) %></dd>
     </dl>
 
     <div class="panel-head mt"><h2>Vận đơn</h2></div>
@@ -75,7 +75,7 @@
         <dd class="mono"><%= @order.tracking_code %></dd>
 
         <dt>Tạo lúc</dt>
-        <dd><%= l @order.shipment_created_at, format: :long if @order.shipment_created_at %></dd>
+        <dd><%= vietnam_time(@order.shipment_created_at, format: :long) if @order.shipment_created_at %></dd>
 
         <% if @order.shipping_fee %>
           <dt>Phí ship</dt>
@@ -92,13 +92,13 @@
 
         <% if @order.carrier_status_updated_at %>
           <dt>Cập nhật lúc</dt>
-          <dd><%= l @order.carrier_status_updated_at, format: :long %></dd>
+          <dd><%= vietnam_time(@order.carrier_status_updated_at, format: :long) %></dd>
         <% end %>
 
         <dt>Email báo khách</dt>
         <dd>
           <% if @order.shipping_notified_at %>
-            Đã gửi lúc <%= l @order.shipping_notified_at, format: :long %>
+            Đã gửi lúc <%= vietnam_time(@order.shipping_notified_at, format: :long) %>
           <% elsif @order.email.blank? %>
             Khách không để lại email
           <% else %>

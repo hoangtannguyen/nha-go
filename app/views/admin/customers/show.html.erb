@@ -14,7 +14,7 @@
   <div class="stat-card">
     <span class="stat-label">Đơn gần nhất</span>
     <b class="stat-value small">
-      <%= @customer.last_ordered_at ? l(@customer.last_ordered_at, format: :short) : "—" %>
+      <%= @customer.last_ordered_at ? vietnam_time(@customer.last_ordered_at) : "—" %>
     </b>
   </div>
 </div>
@@ -33,7 +33,7 @@
               <td class="num"><%= order.order_items.sum(&:quantity) %></td>
               <td class="num"><%= price_vnd(order.total) %></td>
               <td><%= order_status_badge(order) %></td>
-              <td class="muted"><%= l order.created_at, format: :short %></td>
+              <td class="muted"><%= vietnam_time(order.created_at) %></td>
             </tr>
           <% end %>
         </tbody>
@@ -50,7 +50,7 @@
       <dt>Họ tên</dt><dd><%= @customer.name %></dd>
       <dt>Điện thoại</dt><dd class="mono"><%= @customer.phone %></dd>
       <dt>Địa chỉ gần nhất</dt><dd><%= @customer.address.presence || "—" %></dd>
-      <dt>Khách từ</dt><dd><%= l @customer.created_at, format: :long %></dd>
+      <dt>Khách từ</dt><dd><%= vietnam_time(@customer.created_at, format: :long) %></dd>
     </dl>
 
     <%= link_to "Nhắn Zalo cho khách", "https://zalo.me/#{@customer.phone}",

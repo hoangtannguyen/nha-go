@@ -22,6 +22,10 @@ module ApplicationHelper
     "#{number_with_delimiter(amount, delimiter: '.')}đ"
   end
 
+  def vietnam_time(time, format: :short)
+    l time.in_time_zone, format: format, locale: :vi
+  end
+
   def order_status_label(order)
     ORDER_STATUS_LABELS.fetch(order.status, order.status)
   end

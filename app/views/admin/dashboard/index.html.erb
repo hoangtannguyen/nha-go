@@ -57,7 +57,7 @@
               <td><%= order.customer_name %></td>
               <td class="num"><%= price_vnd(order.total) %></td>
               <td><%= order_status_badge(order) %></td>
-              <td class="muted"><%= l order.created_at, format: :short %></td>
+              <td class="muted"><%= vietnam_time(order.created_at) %></td>
             </tr>
           <% end %>
         </tbody>

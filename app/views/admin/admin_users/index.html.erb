@@ -26,7 +26,7 @@
             </span>
           </td>
           <td class="muted">
-            <%= admin_user.last_login_at ? l(admin_user.last_login_at, format: :short) : "chưa đăng nhập" %>
+            <%= admin_user.last_login_at ? vietnam_time(admin_user.last_login_at) : "chưa đăng nhập" %>
           </td>
           <td class="actions">
             <%= link_to "Sửa", edit_admin_admin_user_path(admin_user), class: "btn-sm" %>

@@ -41,10 +41,10 @@
             <td class="num">
               <%= subscriber.emails_sent_count %>
               <% if subscriber.last_emailed_at %>
-                <span class="muted block"><%= l subscriber.last_emailed_at, format: :short %></span>
+                <span class="muted block"><%= vietnam_time(subscriber.last_emailed_at) %></span>
               <% end %>
             </td>
-            <td class="muted"><%= l subscriber.subscribed_at, format: :short %></td>
+            <td class="muted"><%= vietnam_time(subscriber.subscribed_at) %></td>
             <td class="actions">
               <%= button_to subscriber.active? ? "Tạm dừng" : "Bật lại",
                             toggle_admin_subscriber_path(subscriber),
