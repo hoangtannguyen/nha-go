@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_20_110000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_20_120000) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -118,6 +118,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_20_110000) do
     t.index ["tracking_code"], name: "index_orders_on_tracking_code", unique: true
   end
 
+  create_table "page_views", force: :cascade do |t|
+    t.string "visitor_id", null: false
+    t.string "path", null: false
+    t.integer "product_id"
+    t.datetime "created_at", null: false
+    t.index ["created_at"], name: "index_page_views_on_created_at"
+    t.index ["product_id"], name: "index_page_views_on_product_id"
+    t.index ["visitor_id"], name: "index_page_views_on_visitor_id"
+  end
+
   create_table "products", force: :cascade do |t|
     t.string "name", null: false
     t.string "tag"
@@ -175,5 +185,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_20_110000) do
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "products"
   add_foreign_key "orders", "customers"
+  add_foreign_key "page_views", "products", on_delete: :nullify
   add_foreign_key "products", "categories"
 end

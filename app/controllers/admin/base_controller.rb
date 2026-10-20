@@ -3,6 +3,7 @@ module Admin
     layout "admin"
 
     before_action :require_admin
+    skip_after_action :track_page_view
 
     helper_method :current_admin
 

@@ -187,7 +187,7 @@ class AdminManagementTest < ActionDispatch::IntegrationTest
     assert_response :success
 
     # doanh thu không tính đơn đã huỷ
-    assert_select ".stat-card", 4
+    assert_select ".stat-card", 8
     assert_match price_vnd(Order.where.not(status: :cancelled).sum(:total)), response.body
   end
 

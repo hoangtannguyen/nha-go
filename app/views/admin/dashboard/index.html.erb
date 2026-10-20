@@ -19,6 +19,25 @@
   </div>
 </div>
 
+<div class="stat-grid">
+  <div class="stat-card">
+    <span class="stat-label">Tổng lượt xem trang</span>
+    <b class="stat-value"><%= number_with_delimiter(@page_views_total) %></b>
+  </div>
+  <div class="stat-card">
+    <span class="stat-label">Khách truy cập (ước tính)</span>
+    <b class="stat-value"><%= number_with_delimiter(@unique_visitors) %></b>
+  </div>
+  <div class="stat-card">
+    <span class="stat-label">Lượt xem hôm nay</span>
+    <b class="stat-value"><%= number_with_delimiter(@page_views_today) %></b>
+  </div>
+  <div class="stat-card">
+    <span class="stat-label">Lượt xem 7 ngày gần nhất</span>
+    <b class="stat-value"><%= number_with_delimiter(@page_views_week) %></b>
+  </div>
+</div>
+
 <div class="admin-cols">
   <section class="panel">
     <div class="panel-head">
@@ -63,6 +82,22 @@
       </ul>
     <% else %>
       <p class="empty-note">Chưa bán được món nào.</p>
+    <% end %>
+
+    <div class="panel-head mt"><h2>Sản phẩm xem nhiều</h2></div>
+    <% if @top_viewed_products.any? %>
+      <ul class="rank-list">
+        <% @top_viewed_products.each_with_index do |(product, views), index| %>
+          <li>
+            <span class="rank-no"><%= index + 1 %></span>
+            <span class="rank-name"><%= product.name %></span>
+            <b><%= number_with_delimiter(views) %> lượt</b>
+          </li>
+        <% end %>
+        <li><span class="rank-name">Tổng lượt xem sản phẩm</span><b><%= number_with_delimiter(@product_views_total) %></b></li>
+      </ul>
+    <% else %>
+      <p class="empty-note">Chưa có lượt xem sản phẩm nào.</p>
     <% end %>
 
     <div class="panel-head mt"><h2>Kho &amp; khách</h2></div>

@@ -31,4 +31,10 @@ class ProductsController < ApplicationController
                       .where.not(id: @product.id)
                       .limit(3)
   end
+
+  private
+
+  def page_view_product
+    @product if action_name == "show"
+  end
 end
