@@ -34,4 +34,15 @@ module ApplicationHelper
       tag.div "👕", class: [ "img-fallback", options[:class] ].compact.join(" ")
     end
   end
+
+  # Logo/banner admin đã upload ở "Cài đặt giao diện", chưa có thì dùng ảnh tĩnh mặc định
+  def site_image_tag(name, **options)
+    image = site_setting.image(name)
+
+    image_tag image.attached? ? image : SiteSetting::IMAGES.fetch(name.to_s)[:default], **options
+  end
+
+  def site_setting
+    @site_setting ||= SiteSetting.current
+  end
 end

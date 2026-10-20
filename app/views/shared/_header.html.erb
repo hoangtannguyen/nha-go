@@ -1,6 +1,6 @@
 <header data-controller="menu">
   <div class="wrap nav">
-    <%= link_to root_path, class: "brand" do %><%= image_tag "logo.webp", alt: "Nhà Gô" %><% end %>
+    <%= link_to root_path, class: "brand" do %><%= site_image_tag :logo, alt: "Nhà Gô" %><% end %>
 
     <nav class="nav-links" data-controller="nav">
       <%= link_to "Hàng mới", root_path(anchor: "hang-moi"), data: { nav_target: "link", action: "nav#select" } %>

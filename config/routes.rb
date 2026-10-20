@@ -47,6 +47,9 @@ Rails.application.routes.draw do
       end
     end
     resources :admin_users, except: [ :show ]
+    resource :settings, only: [ :edit, :update ] do
+      delete "images/:image", action: :reset_image, as: :reset_image
+    end
 
     root "dashboard#index"
   end

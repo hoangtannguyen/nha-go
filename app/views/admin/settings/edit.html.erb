@@ -1,0 +1,72 @@
+<% content_for :title, "Cài đặt giao diện" %>
+
+<section class="panel panel-narrow">
+  <%= form_with model: @setting, url: admin_settings_path, method: :patch, class: "checkout-form admin-form" do |form| %>
+    <% if @errors.present? %>
+      <div class="form-errors">
+        <% @errors.each do |message| %>
+          <p><%= message %></p>
+        <% end %>
+      </div>
+    <% end %>
+
+    <% SiteSetting::IMAGES.each do |name, config| %>
+      <% image = @setting.image(name) %>
+      <div class="field setting-image">
+        <%= form.label name, config[:label] %>
+
+        <div class="photo-preview">
+          <%= image_tag image.attached? ? image : config[:default], alt: config[:label],
+                        class: name == "logo" ? "setting-logo" : nil %>
+          <% if image.attached? %>
+            <span class="muted">Đang dùng ảnh đã upload: <code><%= image.filename %></code></span>
+            <%# link_to thay vì button_to: button_to sinh <form> lồng trong form_with %>
+            <%= link_to "Dùng lại ảnh mặc định", reset_image_admin_settings_path(name),
+                        class: "photo-remove-inline",
+                        data: { turbo_method: :delete, turbo_confirm: "Xoá ảnh đã upload và dùng lại ảnh mặc định?" } %>
+          <% else %>
+            <span class="muted">Đang dùng ảnh mặc định</span>
+          <% end %>
+        </div>
+
+        <%# Kèm cả đuôi file: hộp thoại chọn file trên Windows lọc theo MIME hay ẩn mất ảnh %>
+        <%= form.file_field name, accept: "image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp" %>
+        <span class="field-hint"><%= config[:hint] %> JPG/PNG/WEBP, tối đa 5MB.</span>
+      </div>
+    <% end %>
+
+    <h2 class="setting-section">Mục "Câu chuyện Nhà Gô" trên trang chủ</h2>
+    <p class="field-hint">Để trống ô nào thì trang chủ dùng nội dung mặc định của ô đó.</p>
+
+    <div class="field-row">
+      <div class="field">
+        <%= form.label :about_title, SiteSetting::TEXTS["about_title"][:label] %>
+        <%= form.text_field :about_title, value: @setting.text(:about_title),
+                            maxlength: SiteSetting::TEXTS["about_title"][:max] %>
+      </div>
+
+      <div class="field">
+        <%= form.label :about_title_highlight, SiteSetting::TEXTS["about_title_highlight"][:label] %>
+        <%= form.text_field :about_title_highlight, value: @setting.text(:about_title_highlight),
+                            maxlength: SiteSetting::TEXTS["about_title_highlight"][:max] %>
+      </div>
+    </div>
+
+    <div class="field">
+      <%= form.label :about_body, SiteSetting::TEXTS["about_body"][:label] %>
+      <%= form.text_area :about_body, value: @setting.text(:about_body), rows: 10,
+                         maxlength: SiteSetting::TEXTS["about_body"][:max] %>
+      <span class="field-hint">Mỗi đoạn văn cách nhau bằng 1 dòng trống.</span>
+    </div>
+
+    <div class="field">
+      <%= form.label :about_quote, SiteSetting::TEXTS["about_quote"][:label] %>
+      <%= form.text_field :about_quote, value: @setting.text(:about_quote),
+                          maxlength: SiteSetting::TEXTS["about_quote"][:max] %>
+    </div>
+
+    <div class="form-actions">
+      <%= form.submit "Lưu cài đặt", class: "btn btn-rust" %>
+    </div>
+  <% end %>
+</section>

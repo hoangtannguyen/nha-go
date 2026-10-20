@@ -21,7 +21,7 @@
       </div>
 
       <div class="hero-img reveal" data-reveal-target="item">
-        <%= image_tag "hero.webp", alt: "Kệ đồ secondhand tại shop Nhà Gô" %>
+        <%= site_image_tag :hero, alt: "Kệ đồ secondhand tại shop Nhà Gô" %>
         <div class="hero-tag">Hàng về mỗi tuần<small>Nhắn Zalo để giữ món</small></div>
       </div>
     </div>
@@ -85,14 +85,14 @@
   <section class="about" id="ve-nha-go">
     <div class="wrap about-grid">
       <div class="imgbox reveal" data-reveal-target="item">
-        <%= image_tag "about.webp", alt: "Tủ đồ secondhand được tuyển chọn tại Nhà Gô" %>
+        <%= site_image_tag :about, alt: "Tủ đồ secondhand được tuyển chọn tại Nhà Gô" %>
       </div>
       <div class="reveal" data-reveal-target="item">
-        <h2 class="sec-title">Câu chuyện <span class="hand">Nhà Gô</span></h2>
-        <p>Hành trình của Nhà Gô bắt đầu từ những năm 2010, với những lô hàng nhỏ lẻ từng chiếc áo, chiếc quần giữa lòng chợ xép Ngô Đức Kế (TP. Huế). Nơi ấy gói gọn niềm tin giản dị: quần áo cũ chưa hề cũ — chỉ cần gặp đúng người.</p>
-        <p>Hơn một thập kỷ trôi qua, mỗi tuần shop vẫn miệt mài tuyển chọn từng món đồ si Nhật, Hàn, Châu Âu chất lượng: hàng chuẩn tuyển, ít giặt, giữ trọn form dáng. Tất cả đều được giặt sạch, hấp phẳng và chụp thật tỉ mỉ trước khi gửi đến bạn.</p>
-        <p>Mỗi tuần shop tuyển từ những lô đồ si đã qua kiểm định: form đẹp. Giặt sạch, hấp phẳng, chụp như thật trước khi lên web.</p>
-        <p class="quote">"Mỗi món đồ si là một cái duyên — chỉ chờ đúng người nhận ra giá trị."</p>
+        <h2 class="sec-title"><%= site_setting.text(:about_title) %> <span class="hand"><%= site_setting.text(:about_title_highlight) %></span></h2>
+        <% site_setting.about_paragraphs.each do |paragraph| %>
+          <p><%= paragraph %></p>
+        <% end %>
+        <p class="quote"><%= site_setting.text(:about_quote) %></p>
       </div>
     </div>
   </section>

@@ -18,7 +18,7 @@
   <body class="admin-body">
     <aside class="admin-side" data-controller="menu">
       <div class="admin-brand">
-        <%= link_to admin_root_path do %><%= image_tag "logo.webp", alt: "Nhà Gô" %><% end %>
+        <%= link_to admin_root_path do %><%= site_image_tag :logo, alt: "Nhà Gô" %><% end %>
         <span>Quản trị</span>
       </div>
 
@@ -30,6 +30,7 @@
         <%= link_to "🙋 Khách hàng", admin_customers_path, class: admin_nav_class("customers") %>
         <%= link_to "📬 Thành viên", admin_subscribers_path, class: admin_nav_class("subscribers") %>
         <%= link_to "🔑 Tài khoản admin", admin_admin_users_path, class: admin_nav_class("admin_users") %>
+        <%= link_to "🖼️ Cài đặt giao diện", edit_admin_settings_path, class: admin_nav_class("settings") %>
       </nav>
 
       <div class="admin-side-foot">

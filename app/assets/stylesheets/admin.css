@@ -193,3 +193,11 @@
 .broadcast-info .muted{font-size:.8rem}
 .broadcast-summary{font-size:.95rem;margin-bottom:10px}
 .panel.mt{margin-top:18px}
+
+/* ===== cài đặt giao diện ===== */
+.setting-image{padding-bottom:18px;border-bottom:1px dashed rgba(46,42,36,.12);margin-bottom:18px}
+.setting-image .photo-preview{margin:4px 0 12px;flex-wrap:wrap}
+.setting-image .photo-preview img.setting-logo{width:auto;max-width:180px;height:56px;object-fit:contain;background:var(--cream);padding:6px 10px}
+.photo-remove-inline{font-size:.85rem;font-weight:600;color:var(--rust)}
+.photo-remove-inline:hover{text-decoration:underline}
+.setting-section{font-size:1.05rem;font-weight:800;margin:8px 0 4px}
