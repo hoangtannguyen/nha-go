@@ -35,8 +35,16 @@
       </div>
     <% end %>
 
+    <h2 class="setting-section">Banner trang chủ</h2>
+    <p class="field-hint">Để trống ô chữ nào thì trang chủ dùng nội dung mặc định của ô đó.</p>
+
+    <div class="field">
+      <%= form.label :hero_lead, SiteSetting::TEXTS["hero_lead"][:label] %>
+      <%= form.text_area :hero_lead, value: @setting.text(:hero_lead), rows: 3,
+                         maxlength: SiteSetting::TEXTS["hero_lead"][:max] %>
+    </div>
+
     <h2 class="setting-section">Mục "Câu chuyện Nhà Gô" trên trang chủ</h2>
-    <p class="field-hint">Để trống ô nào thì trang chủ dùng nội dung mặc định của ô đó.</p>
 
     <div class="field-row">
       <div class="field">

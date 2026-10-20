@@ -5,7 +5,7 @@
       <div>
         <span class="badge">✦ Đồ si tuyển chọn từng món</span>
         <h1>Đồ secondhand <span class="hand">đẹp &amp; sạch</span><br>giá hợp túi tiền</h1>
-        <p class="lead">Nhà Gô tuyển từng chiếc áo, từng cái quần từ những lô đồ si Nhật – Hàn - Châu Âu uy tín. Rửa sạch, lận phẳng, up lại như mới — bạn chỉ việc mặc.</p>
+        <p class="lead"><%= site_setting.text(:hero_lead) %></p>
 
         <div class="hero-cta">
           <a class="btn btn-rust" href="#hang-moi">Xem hàng mới về</a>
@@ -101,7 +101,7 @@
   <section class="contact" id="lien-he">
     <div class="wrap">
       <h2 class="sec-title reveal" data-reveal-target="item">Nhắn shop <span class="hand">luôn nha</span></h2>
-      <p class="sec-sub reveal" data-reveal-target="item">Món nào ưng, nhắn ngay để giữ đồ — hàng si nhanh tay là hết đó.</p>
+      <p class="sec-sub reveal" data-reveal-target="item">Món nào ưng, nhắn Zalo để giữ đồ nhé — chưa biết chọn gì cứ hỏi Nhà Gô, shop sẵn sàng tư vấn và chụp ảnh, quay video cho bạn xem!</p>
 
       <div class="contact-grid">
         <div class="reveal" data-reveal-target="item">
@@ -115,7 +115,11 @@
           </div>
           <div class="c-line">
             <div class="ico">📍</div>
-            <div><b>Địa chỉ shop</b><span>97 Ngô Đức Kế, TP. Huế</span></div>
+            <div>
+              <b>Địa chỉ shop</b><span>97 Ngô Đức Kế, TP. Huế</span>
+              <%= link_to "Xem bản đồ / chỉ đường ↗", ApplicationHelper::SHOP_MAP_URL,
+                          class: "c-map", target: "_blank", rel: "noopener" %>
+            </div>
           </div>
           <div class="c-line">
             <div class="ico">🕒</div>
@@ -133,6 +137,12 @@
 
           <p class="note">Freeship đơn từ 200.000đ nội thành TP. Huế</p>
         </div>
+      </div>
+
+      <div class="contact-map reveal" data-reveal-target="item">
+        <iframe src="<%= ApplicationHelper::SHOP_MAP_EMBED_URL %>"
+                title="Bản đồ đường đến shop Nhà Gô, 97 Ngô Đức Kế, TP. Huế"
+                loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
       </div>
     </div>
   </section>

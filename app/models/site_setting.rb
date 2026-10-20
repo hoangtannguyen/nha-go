@@ -13,8 +13,12 @@ class SiteSetting < ApplicationRecord
                  hint: "Ảnh cạnh đoạn giới thiệu shop trên trang chủ." }
   }.freeze
 
-  # Nội dung mục "Câu chuyện Nhà Gô" trên trang chủ
+  # Chữ trên trang chủ: đoạn giới thiệu ở banner và mục "Câu chuyện Nhà Gô"
   TEXTS = {
+    "hero_lead" => {
+      label: "Đoạn giới thiệu dưới tiêu đề banner", max: 300,
+      default: "Nhà Gô tuyển từng chiếc áo, từng cái quần từ những lô đồ si Nhật – Hàn - Châu Âu uy tín. Rửa sạch, lận phẳng, up lại như mới — bạn chỉ việc mặc."
+    },
     "about_title" => { label: "Tiêu đề", max: 60, default: "Câu chuyện" },
     "about_title_highlight" => { label: "Chữ viết tay nổi bật sau tiêu đề", max: 40, default: "Nhà Gô" },
     "about_body" => {

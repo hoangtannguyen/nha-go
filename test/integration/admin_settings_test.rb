@@ -12,6 +12,13 @@ class AdminSettingsTest < ActionDispatch::IntegrationTest
     assert_redirected_to admin_login_path
   end
 
+  test "mục liên hệ có link Google Maps tới địa chỉ shop" do
+    get root_path
+
+    assert_select "#lien-he a.c-map[href=?][target=_blank]", ApplicationHelper::SHOP_MAP_URL
+    assert_select "#lien-he .contact-map iframe[src=?][loading=lazy]", ApplicationHelper::SHOP_MAP_EMBED_URL
+  end
+
   test "chưa upload thì trang chủ dùng ảnh tĩnh mặc định" do
     get root_path
 
@@ -73,6 +80,16 @@ class AdminSettingsTest < ActionDispatch::IntegrationTest
     assert_select ".about p:not(.quote)", 2
     assert_select ".about p", text: /Đoạn <b>hai<\/b>\./, message: "HTML phải bị escape"
     assert_select ".about p.quote", text: "Trích dẫn mới"
+  end
+
+  test "sửa đoạn giới thiệu ở banner trang chủ" do
+    get root_path
+    assert_select ".hero .lead", text: /Nhà Gô tuyển từng chiếc áo/
+
+    patch admin_settings_path, params: { site_setting: { hero_lead: "Đồ si mới về mỗi tuần." } }
+
+    get root_path
+    assert_select ".hero .lead", text: "Đồ si mới về mỗi tuần."
   end
 
   test "xoá trắng ô thì quay về nội dung mặc định" do
