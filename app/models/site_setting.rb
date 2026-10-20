@@ -3,6 +3,7 @@
 class SiteSetting < ApplicationRecord
   IMAGE_TYPES = %w[image/jpeg image/png image/webp].freeze
   MAX_IMAGE_SIZE = 5.megabytes
+  HERO_STAT_COUNT = 3
 
   IMAGES = {
     "logo"  => { label: "Logo", default: "logo.webp",
@@ -19,6 +20,12 @@ class SiteSetting < ApplicationRecord
       label: "Đoạn giới thiệu dưới tiêu đề banner", max: 300,
       default: "Nhà Gô tuyển từng chiếc áo, từng cái quần từ những lô đồ si Nhật – Hàn - Châu Âu uy tín. Rửa sạch, lận phẳng, up lại như mới — bạn chỉ việc mặc."
     },
+    "hero_stat_1_value" => { label: "Số liệu 1", max: 20, default: "Hơn 10 năm" },
+    "hero_stat_1_label" => { label: "Chú thích số liệu 1", max: 40, default: "bán hàng tại nhà" },
+    "hero_stat_2_value" => { label: "Số liệu 2", max: 20, default: "2.000+" },
+    "hero_stat_2_label" => { label: "Chú thích số liệu 2", max: 40, default: "món đã về nhà" },
+    "hero_stat_3_value" => { label: "Số liệu 3", max: 20, default: "1–3 ngày" },
+    "hero_stat_3_label" => { label: "Chú thích số liệu 3", max: 40, default: "giao toàn quốc" },
     "about_title" => { label: "Tiêu đề", max: 60, default: "Câu chuyện" },
     "about_title_highlight" => { label: "Chữ viết tay nổi bật sau tiêu đề", max: 40, default: "Nhà Gô" },
     "about_body" => {
@@ -63,6 +70,13 @@ class SiteSetting < ApplicationRecord
   # Để trống thì dùng nội dung mặc định
   def text(name)
     self[name].presence || TEXTS.fetch(name.to_s)[:default]
+  end
+
+  # [[số liệu, chú thích], ...] cho các ô dưới banner trang chủ
+  def hero_stats
+    1.upto(HERO_STAT_COUNT).map do |index|
+      [ text("hero_stat_#{index}_value"), text("hero_stat_#{index}_label") ]
+    end
   end
 
   # Mỗi đoạn cách nhau bằng 1 dòng trống

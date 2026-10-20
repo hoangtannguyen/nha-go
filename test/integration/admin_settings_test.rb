@@ -92,6 +92,18 @@ class AdminSettingsTest < ActionDispatch::IntegrationTest
     assert_select ".hero .lead", text: "Đồ si mới về mỗi tuần."
   end
 
+  test "sửa số liệu dưới banner trang chủ" do
+    get root_path
+    assert_select ".hero-stats > div", 3
+    assert_select ".hero-stats > div:first-child b", text: "Hơn 10 năm"
+
+    patch admin_settings_path, params: { site_setting: { hero_stat_2_value: "5.000+", hero_stat_2_label: "khách đã mua" } }
+
+    get root_path
+    assert_select ".hero-stats > div:nth-child(2)", text: "5.000+khách đã mua"
+    assert_select ".hero-stats > div:first-child b", text: "Hơn 10 năm", message: "ô không sửa giữ mặc định"
+  end
+
   test "xoá trắng ô thì quay về nội dung mặc định" do
     SiteSetting.instance.update!(about_title: "Tiêu đề cũ")
 

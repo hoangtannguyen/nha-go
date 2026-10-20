@@ -44,6 +44,19 @@
                          maxlength: SiteSetting::TEXTS["hero_lead"][:max] %>
     </div>
 
+    <% 1.upto(SiteSetting::HERO_STAT_COUNT) do |index| %>
+      <div class="field-row">
+        <% %w[value label].each do |part| %>
+          <% name = "hero_stat_#{index}_#{part}" %>
+          <div class="field">
+            <%= form.label name, SiteSetting::TEXTS[name][:label] %>
+            <%= form.text_field name, value: @setting.text(name), maxlength: SiteSetting::TEXTS[name][:max] %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+    <span class="field-hint">Số liệu in đậm, chú thích chữ nhỏ bên dưới — hiện thành 3 ô cạnh nhau dưới nút "Xem hàng mới về".</span>
+
     <h2 class="setting-section">Mục "Câu chuyện Nhà Gô" trên trang chủ</h2>
 
     <div class="field-row">
