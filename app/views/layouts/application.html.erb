@@ -9,6 +9,8 @@
     <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <%# Tắt Turbo prefetch khi rê chuột: click sẽ dùng lại response đã prefetch (request bị bỏ qua khi đếm), làm mất lượt xem trang %>
+    <meta name="turbo-prefetch" content="false">
 
     <%= yield :head %>
 

@@ -37,6 +37,12 @@ class PageViewTrackingTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "trang khách tắt Turbo prefetch để click link vẫn gửi request và được tính" do
+    get root_path
+
+    assert_select "meta[name='turbo-prefetch'][content='false']"
+  end
+
   test "admin đăng nhập thì không tính lượt xem, kể cả trang khách" do
     post admin_login_path, params: { email: @owner.email, password: "matkhau12345" }
 
